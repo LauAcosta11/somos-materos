@@ -889,15 +889,12 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ─── CAROUSEL SLIDE ─── */
-    @keyframes car-slide-in-right  { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes car-slide-in-left   { from { transform: translateX(-40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes car-slide-out-left  { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-40px); opacity: 0; } }
-    @keyframes car-slide-out-right { from { transform: translateX(0); opacity: 1; } to { transform: translateX(40px); opacity: 0; } }
-    .car-slide-in-r  { animation: car-slide-in-right  0.28s ease both; }
-    .car-slide-in-l  { animation: car-slide-in-left   0.28s ease both; }
-    .car-slide-out-l { animation: car-slide-out-left  0.18s ease both; }
-    .car-slide-out-r { animation: car-slide-out-right 0.18s ease both; }
+    /* ─── CAROUSEL FADE ─── */
+    .producto-img,
+    [id^="bcarimg-"],
+    [id^="accimg-"] {
+      transition: opacity 0.2s ease;
+    }
 
     /* ─── ANIMATIONS ─── */
     @keyframes fadeUp {
@@ -2370,34 +2367,24 @@ function preloadUrls(urls) {
   });
 }
 window.addEventListener('load', () => {
-  // Solo precargar la primera imagen de cada producto (visible por defecto)
+  // Precargar TODAS las imágenes en segundo plano apenas carga la página
   setTimeout(() => {
-    if (typeof productos !== 'undefined') {
-      productos.forEach(p => { if (p.imgs && p.imgs[0]) { const i = new Image(); i.src = p.imgs[0]; } });
+    const allImgs = [];
+    if (typeof productos !== 'undefined') productos.forEach(p => p.imgs && allImgs.push(...p.imgs));
+    if (typeof bcarImgs !== 'undefined') Object.values(bcarImgs).forEach(imgs => allImgs.push(...imgs));
+    if (typeof accCarImgs !== 'undefined') Object.values(accCarImgs).forEach(imgs => allImgs.push(...imgs));
+    if (typeof portaMateNegro !== 'undefined') allImgs.push(...portaMateNegro, ...portaMateMarron);
+    // Cargar de a una para no saturar la red
+    let i = 0;
+    function loadNext() {
+      if (i >= allImgs.length) return;
+      const img = new Image();
+      img.onload = img.onerror = () => { i++; loadNext(); };
+      img.src = allImgs[i];
     }
-    // Lazy: cargar resto de imágenes cuando la sección entra al viewport
-    const lazyObs = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.id || entry.target.closest('[id]')?.id;
-        if (id === 'productos' || entry.target.closest('#productos')) {
-          if (typeof productos !== 'undefined') productos.forEach(p => preloadUrls(p.imgs));
-        }
-        if (id === 'bombillas' || entry.target.closest('#bombillas')) {
-          if (typeof bcarImgs !== 'undefined') Object.values(bcarImgs).forEach(imgs => preloadUrls(imgs));
-        }
-        if (id === 'accesorios' || entry.target.closest('#accesorios')) {
-          if (typeof accCarImgs !== 'undefined') Object.values(accCarImgs).forEach(imgs => preloadUrls(imgs));
-          if (typeof portaMateNegro !== 'undefined') preloadUrls([...portaMateNegro, ...portaMateMarron]);
-        }
-        lazyObs.unobserve(entry.target);
-      });
-    }, { rootMargin: '300px' });
-    ['#productos','#bombillas','#accesorios'].forEach(sel => {
-      const el = document.querySelector(sel);
-      if (el) lazyObs.observe(el);
-    });
-  }, 200);
+    // Lanzar 3 descargas en paralelo
+    loadNext(); loadNext(); loadNext();
+  }, 800); // Esperar a que cargue lo visible primero
 });
 
 // ─── NAV SCROLL ───
@@ -2748,23 +2735,15 @@ const bcarState = {};
 const carAnimatingSet = new WeakSet();
 
 function slideImg(img, dir, newSrc, dotsEl, newIdx) {
-  if (carAnimatingSet.has(img)) return;
-  carAnimatingSet.add(img);
-  const outCls = dir > 0 ? 'car-slide-out-l' : 'car-slide-out-r';
-  const inCls  = dir > 0 ? 'car-slide-in-r'  : 'car-slide-in-l';
-  const preload = new Image();
-  preload.src = newSrc;
-  const doSlide = () => {
-    img.classList.add(outCls);
-    setTimeout(() => {
-      img.src = newSrc;
-      img.classList.remove(outCls);
-      img.classList.add(inCls);
-      if (dotsEl) [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === newIdx));
-      setTimeout(() => { img.classList.remove(inCls); carAnimatingSet.delete(img); }, 280);
-    }, 180);
-  };
-  if (preload.complete) { doSlide(); } else { preload.onload = doSlide; preload.onerror = doSlide; }
+  if (img.dataset.animating) return;
+  img.dataset.animating = '1';
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = newSrc;
+    img.style.opacity = '1';
+    if (dotsEl) [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === newIdx));
+    setTimeout(() => delete img.dataset.animating, 220);
+  }, 150);
 }
 
 function bcarMove(cid, dir) {
