@@ -1,0 +1,3037 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Somos Materos · La Plata</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --verde: #4a5e3a;
+      --verde-oscuro: #2e3d22;
+      --verde-claro: #6b7f57;
+      --beige: #d4c4a0;
+      --beige-claro: #ede3cc;
+      --beige-palido: #f7f2e8;
+      --crema: #faf6ee;
+      --marron: #8b6f47;
+      --texto: #2a2a1e;
+      --blanco: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--crema);
+      color: var(--texto);
+      overflow-x: hidden;
+    }
+
+    /* ─── CANVAS BACKGROUND ─── */
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 60px;
+      background: rgba(250,246,238,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212,196,160,0.4);
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 12px 60px;
+      box-shadow: 0 2px 30px rgba(46,61,34,0.08);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--verde-oscuro);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--verde);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--marron);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--marron); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cart {
+      position: relative;
+      cursor: pointer;
+      background: var(--verde);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .nav-cart:hover { background: var(--verde-oscuro); transform: translateY(-1px); }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: var(--marron);
+      color: white;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      display: none;
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 20px 60px;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--marron);
+      background: rgba(212,196,160,0.3);
+      border: 1px solid var(--beige);
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      animation: fadeUp 1.2s 0.1s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 1;
+      color: var(--verde-oscuro);
+      margin-bottom: 8px;
+      animation: fadeUp 1.2s 0.2s ease both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--marron);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--verde-claro);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeUp 1.2s 0.3s ease both;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: #5a5a40;
+      line-height: 1.8;
+      max-width: 520px;
+      margin: 0 auto 48px;
+      animation: fadeUp 1.2s 0.4s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 1.2s 0.5s ease both;
+    }
+
+    .btn-primary {
+      background: var(--verde);
+      color: white;
+      padding: 15px 38px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      border: 2px solid var(--verde);
+    }
+
+    .btn-primary:hover {
+      background: var(--verde-oscuro);
+      border-color: var(--verde-oscuro);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(74,94,58,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--verde);
+      padding: 15px 38px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      border: 2px solid var(--verde);
+    }
+
+    .btn-secondary:hover {
+      background: var(--verde);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--verde-claro);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    .hero-scroll-hint svg { opacity: 0.6; }
+
+    /* ─── SECTION BASE ─── */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--marron);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--verde-oscuro);
+      line-height: 1.15;
+    }
+
+    .section-title em { font-style: italic; color: var(--marron); }
+
+    .section-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--beige), var(--marron), var(--beige));
+      margin: 20px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ─── SOBRE NOSOTROS ─── */
+    #sobre-nosotros {
+      padding: 120px 60px;
+      background: linear-gradient(180deg, var(--crema) 0%, var(--beige-palido) 100%);
+    }
+
+    .sobre-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .sobre-img-wrapper {
+      position: relative;
+    }
+
+    .sobre-img-wrapper img {
+      width: 100%;
+      border-radius: 12px 60px 12px 60px;
+      object-fit: cover;
+      height: 480px;
+      filter: sepia(15%) saturate(90%);
+    }
+
+    .sobre-img-accent {
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 100%; height: 100%;
+      border: 2px solid var(--beige);
+      border-radius: 12px 60px 12px 60px;
+      z-index: -1;
+    }
+
+    .sobre-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      color: var(--verde-oscuro);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .sobre-text h2 em { font-style: italic; color: var(--marron); }
+
+    .sobre-text p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: #4a4a30;
+      margin-bottom: 20px;
+    }
+
+    .sobre-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .sobre-tag {
+      background: rgba(74,94,58,0.08);
+      border: 1px solid rgba(74,94,58,0.2);
+      color: var(--verde);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── PRODUCTOS ─── */
+    #productos {
+      padding: 120px 60px;
+      background: var(--crema);
+    }
+
+    .productos-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .producto-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(212,196,160,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .producto-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(46,61,34,0.12);
+    }
+
+    .producto-img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .producto-card:hover .producto-img { transform: scale(1.04); }
+
+    .producto-img-wrapper {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .producto-badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: var(--verde);
+      color: white;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .producto-info {
+      padding: 24px;
+    }
+
+    .producto-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--verde-oscuro);
+      margin-bottom: 6px;
+    }
+
+    .producto-desc {
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .producto-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .producto-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--marron);
+    }
+
+    .btn-agregar {
+      background: var(--verde);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-agregar:hover {
+      background: var(--verde-oscuro);
+      transform: scale(1.04);
+    }
+
+    .btn-agregar.added {
+      background: var(--marron);
+    }
+
+    /* ─── RESEÑAS ─── */
+    #resenas {
+      padding: 120px 60px;
+      background: var(--verde-oscuro);
+      color: white;
+      overflow: hidden;
+    }
+
+    #resenas .section-title { color: var(--beige-claro); }
+    #resenas .section-eyebrow { color: var(--beige); }
+
+    .resenas-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .resena-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(212,196,160,0.15);
+      border-radius: 16px;
+      padding: 32px;
+      transition: background 0.3s;
+    }
+
+    .resena-card:hover { background: rgba(255,255,255,0.1); }
+
+    .resena-stars {
+      color: var(--beige);
+      font-size: 1rem;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .resena-texto {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .resena-autor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .resena-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--beige);
+    }
+
+    .resena-nombre {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--beige-claro);
+    }
+
+    .resena-fecha {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ─── CONTACTO ─── */
+    #contacto {
+      padding: 120px 60px;
+      background: var(--beige-palido);
+    }
+
+    .contacto-wrapper {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--verde);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: white;
+      border: 1px solid rgba(212,196,160,0.5);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--texto);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--verde-claro);
+      box-shadow: 0 0 0 3px rgba(74,94,58,0.1);
+    }
+
+    .form-group textarea { height: 140px; resize: vertical; }
+
+    .btn-whatsapp {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .btn-whatsapp:hover {
+      background: #1da851;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(37,211,102,0.35);
+    }
+
+    .btn-whatsapp svg { flex-shrink: 0; }
+
+    .contacto-info {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      text-align: center;
+    }
+
+    .contacto-info-item {
+      padding: 24px 16px;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid rgba(212,196,160,0.3);
+    }
+
+    .contacto-info-icon {
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+
+    .contacto-info-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--verde-claro);
+      margin-bottom: 4px;
+    }
+
+    .contacto-info-value {
+      font-size: 0.9rem;
+      color: var(--texto);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--verde-oscuro);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 40px 60px;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer a { color: var(--beige); text-decoration: none; }
+    footer .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--beige-claro);
+      margin-bottom: 8px;
+    }
+
+    /* ─── CART DRAWER ─── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 420px;
+      max-width: 100vw;
+      height: 100vh;
+      background: var(--crema);
+      z-index: 201;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 50px rgba(0,0,0,0.15);
+    }
+
+    .cart-drawer.open { transform: translateX(0); }
+
+    .cart-header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid rgba(212,196,160,0.4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--verde-oscuro);
+    }
+
+    .cart-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--verde);
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 28px;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--verde-claro);
+    }
+
+    .cart-empty p { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; }
+
+    .cart-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(212,196,160,0.3);
+      align-items: center;
+    }
+
+    .cart-item img {
+      width: 70px; height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .cart-item-info { flex: 1; }
+
+    .cart-item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--verde-oscuro);
+      margin-bottom: 4px;
+    }
+
+    .cart-item-price {
+      font-size: 0.9rem;
+      color: var(--marron);
+    }
+
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .qty-btn {
+      width: 26px; height: 26px;
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .qty-btn:hover { background: var(--verde-oscuro); }
+    .qty-num { font-size: 0.9rem; font-weight: 500; min-width: 18px; text-align: center; }
+
+    .cart-remove {
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .cart-remove:hover { color: #c0392b; }
+
+    .cart-footer {
+      padding: 24px 28px;
+      border-top: 1px solid rgba(212,196,160,0.4);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--verde-oscuro);
+      margin-bottom: 16px;
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 16px;
+      background: var(--verde);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 10px;
+    }
+
+    .btn-checkout:hover { background: var(--verde-oscuro); }
+
+    .btn-checkout-wa {
+      width: 100%;
+      padding: 14px;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-checkout-wa:hover { background: #1da851; }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--verde-oscuro);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* ─── CAROUSEL ─── */
+    .carousel { position: relative; overflow: hidden; background: #f0ebe0; }
+    .carousel .producto-img {
+      transition: opacity 0.15s ease;
+      width: 100%; height: 240px; object-fit: cover; display: block;
+    }
+    .car-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.85); border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 1.3rem; cursor: pointer; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--verde-oscuro); box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: background 0.2s, transform 0.2s; line-height:1; padding:0;
+    }
+    .car-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
+    .car-prev { left: 8px; }
+    .car-next { right: 8px; }
+    .car-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 5px;
+    }
+    .car-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.55); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .car-dot.active { background: white; transform: scale(1.3); }
+    .color-swatches { display: flex; gap: 8px; margin-bottom: 10px; }
+    .color-swatch {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .color-swatch.active { border-color: var(--verde); transform: scale(1.15); }
+    .color-swatch:hover { transform: scale(1.1); }
+
+
+
+    /* ─── BOMBILLA CAROUSEL ─── */
+    .bombilla-carousel-wrap {
+      position: relative;
+      overflow: hidden;
+      width: 340px;
+      flex-shrink: 0;
+      background: #f0ebe0;
+    }
+    .bombilla-carousel-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.15s ease;
+      display: block;
+    }
+    .bcar-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.85);
+      border: none; width: 32px; height: 32px;
+      border-radius: 50%; font-size: 1.3rem;
+      cursor: pointer; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--verde-oscuro);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: background 0.2s, transform 0.2s;
+      line-height: 1; padding: 0;
+    }
+    .bcar-btn:hover { background: white; transform: translateY(-50%) scale(1.1); }
+    .bcar-prev { left: 8px; }
+    .bcar-next { right: 8px; }
+    .bcar-dots {
+      position: absolute; bottom: 8px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 5px;
+    }
+    .bcar-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.55); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .bcar-dot.active { background: white; transform: scale(1.3); }
+
+    /* ─── BOMBILLAS SECTION ─── */
+    .bombillas-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .bombilla-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid rgba(212,196,160,0.3);
+      display: flex;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 200px;
+    }
+    .bombilla-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(46,61,34,0.12);
+    }
+    .bombilla-card:nth-child(even) { flex-direction: row-reverse; }
+    .bombilla-imgs {
+      display: flex;
+      width: 340px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      background: #f0ebe0;
+    }
+    .bombilla-imgs img {
+      width: 50%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    .bombilla-imgs.single img {
+      width: 100%;
+    }
+    .bombilla-card:hover .bombilla-imgs img { transform: scale(1.04); }
+    .bombilla-body {
+      flex: 1;
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .bombilla-numero {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: rgba(74,94,58,0.07);
+      position: absolute;
+      top: 12px; right: 24px;
+      line-height: 1;
+      font-weight: 700;
+      pointer-events: none;
+    }
+    .bombilla-category {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--marron);
+      margin-bottom: 10px;
+    }
+    .bombilla-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--verde-oscuro);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .bombilla-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: #5a5a40;
+      line-height: 1.75;
+      margin-bottom: 24px;
+      max-width: 480px;
+    }
+    .bombilla-footer {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .bombilla-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--marron);
+    }
+    .bombilla-badge {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: var(--verde);
+      color: white;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    @media (max-width: 700px) {
+      .bombilla-card, .bombilla-card:nth-child(even) {
+        flex-direction: column;
+      }
+      .bombilla-imgs { width: 100%; height: 220px; }
+      .bombilla-body { padding: 20px; }
+    }
+
+
+    
+    .sobre-img-wrapper::after {
+      content: '✦  Somos Materos  ✦';
+      display: block;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--marron);
+      margin-top: 16px;
+      opacity: 0.75;
+    }
+
+
+    /* ─── LOGO CIRCULAR FRAME ─── */
+    .logo-frame-circular {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: linear-gradient(145deg, var(--beige-palido), var(--crema));
+      box-shadow:
+        0 0 0 6px var(--beige),
+        0 0 0 12px rgba(212,196,160,0.35),
+        0 0 0 18px rgba(212,196,160,0.12),
+        0 16px 50px rgba(46,61,34,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+    }
+    .logo-frame-circular:hover {
+      transform: scale(1.02);
+      box-shadow:
+        0 0 0 6px var(--beige),
+        0 0 0 12px rgba(212,196,160,0.45),
+        0 0 0 20px rgba(212,196,160,0.15),
+        0 20px 60px rgba(46,61,34,0.18);
+    }
+    .logo-circular-img {
+      width: 88%;
+      height: 88%;
+      border-radius: 50%;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 12px rgba(46,61,34,0.1));
+    }
+
+
+    .bombilla-medida {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--verde);
+      background: rgba(74,94,58,0.07);
+      border: 1px solid rgba(74,94,58,0.15);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+
+    .bombilla-medida {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--verde);
+      background: rgba(74,94,58,0.07);
+      border: 1px solid rgba(74,94,58,0.18);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+
+    /* ─── ACCESORIOS SECTION ─── */
+    #accesorios {
+      padding: 80px 60px 120px;
+      background: var(--verde-oscuro);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    #accesorios .section-title { color: var(--beige-claro); }
+    #accesorios .section-eyebrow { color: var(--beige); }
+    #accesorios .section-line { background: linear-gradient(90deg, transparent, var(--beige), transparent); }
+
+    /* Floating decorative leaves bg */
+    .acc-bg-leaf {
+      position: absolute;
+      font-size: 6rem;
+      opacity: 0.04;
+      pointer-events: none;
+      animation: acc-float 8s ease-in-out infinite;
+    }
+    @keyframes acc-float {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(8deg); }
+    }
+
+    /* Masonry-style grid */
+    .acc-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 20px;
+    }
+
+    .acc-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(212,196,160,0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s;
+      cursor: pointer;
+    }
+    .acc-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    /* CARD SIZES */
+    .acc-card-hero {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+    .acc-card-hero .acc-img { height: 100%; min-height: 480px; }
+
+    .acc-card-sm .acc-img { height: 200px; }
+    .acc-card-md .acc-img { height: 240px; }
+
+    /* Combo card full width */
+    .acc-card-combo {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      min-height: 200px;
+    }
+    .acc-card-combo .acc-img-combo {
+      width: 320px;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+    .acc-card-combo .acc-body { padding: 36px 40px; display: flex; flex-direction: column; justify-content: center; }
+
+    /* Image wrapper */
+    .acc-img-wrapper { overflow: hidden; position: relative; }
+    .acc-img {
+      width: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .acc-card:hover .acc-img { transform: scale(1.04); }
+
+    /* Carousel inside acc */
+    .acc-carousel { position: relative; overflow: hidden; }
+    .acc-carousel .acc-img { transition: opacity 0.15s ease, transform 0.5s ease; }
+    .acc-car-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.18); backdrop-filter: blur(4px);
+      border: none; width: 30px; height: 30px; border-radius: 50%;
+      font-size: 1.1rem; cursor: pointer; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      color: white; transition: background 0.2s; line-height: 1; padding: 0;
+    }
+    .acc-car-btn:hover { background: rgba(255,255,255,0.35); }
+    .acc-car-prev { left: 8px; }
+    .acc-car-next { right: 8px; }
+    .acc-car-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 5px;
+    }
+    .acc-car-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.4); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .acc-car-dot.active { background: white; transform: scale(1.3); }
+
+    /* Body */
+    .acc-body { padding: 20px 22px; }
+    .acc-badge {
+      display: inline-block;
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--beige); background: rgba(212,196,160,0.12);
+      border: 1px solid rgba(212,196,160,0.2);
+      padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+    }
+    .acc-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; color: var(--beige-claro); margin-bottom: 6px; line-height: 1.2;
+    }
+    .acc-nombre-lg {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--beige-claro); margin-bottom: 10px; line-height: 1.15;
+    }
+    .acc-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.65; margin-bottom: 14px;
+    }
+    .acc-desc-lg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: rgba(255,255,255,0.7); line-height: 1.75; margin-bottom: 18px; max-width: 560px;
+    }
+    .acc-medidas {
+      font-size: 0.72rem; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em; margin-bottom: 14px; font-style: italic;
+    }
+    .acc-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .acc-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; color: var(--beige);
+    }
+    .acc-precio-lg {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; color: var(--beige);
+    }
+    .btn-acc {
+      background: rgba(212,196,160,0.15); color: var(--beige-claro);
+      border: 1px solid rgba(212,196,160,0.3);
+      padding: 8px 18px; border-radius: 30px;
+      font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+    .btn-acc:hover { background: var(--beige); color: var(--verde-oscuro); }
+    .btn-acc-lg {
+      background: var(--beige); color: var(--verde-oscuro);
+      border: none; padding: 14px 32px; border-radius: 50px;
+      font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+    }
+    .btn-acc-lg:hover { background: var(--beige-claro); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+    /* Color swatches dark version */
+    .acc-swatches { display: flex; gap: 8px; margin-bottom: 12px; }
+    .acc-swatch {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .acc-swatch.active { border-color: var(--beige); transform: scale(1.15); }
+    .acc-swatch:hover { transform: scale(1.1); }
+
+    /* Combo tag */
+    .acc-combo-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(212,196,160,0.12); border: 1px solid rgba(212,196,160,0.25);
+      color: var(--beige); padding: 5px 14px; border-radius: 20px;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .acc-combo-includes {
+      font-size: 0.82rem; color: rgba(255,255,255,0.5);
+      margin-bottom: 20px; line-height: 1.8;
+    }
+
+    @media (max-width: 900px) {
+      #accesorios { padding: 60px 20px 80px; }
+      .acc-grid { grid-template-columns: 1fr 1fr; }
+      .acc-card-hero { grid-column: 1 / -1; grid-row: auto; }
+      .acc-card-hero .acc-img { min-height: 280px; height: 280px; }
+      .acc-card-combo { flex-direction: column; }
+      .acc-card-combo .acc-img-combo { width: 100%; height: 220px; }
+    }
+    @media (max-width: 600px) {
+      .acc-grid { grid-template-columns: 1fr; }
+    }
+
+
+    /* ─── GRABADO SECTION ─── */
+    #grabado {
+      padding: 120px 60px;
+      background: var(--crema);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .grabado-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .grabado-img-side {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .grabado-img-ring {
+      position: relative;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 8px var(--beige),
+        0 0 0 16px rgba(212,196,160,0.3),
+        0 20px 60px rgba(46,61,34,0.18);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .grabado-img-ring:hover {
+      transform: scale(1.02) rotate(1deg);
+      box-shadow:
+        0 0 0 8px var(--beige),
+        0 0 0 18px rgba(212,196,160,0.4),
+        0 28px 70px rgba(46,61,34,0.22);
+    }
+
+    .grabado-img-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Rotating text ring around the image */
+    .grabado-orbit {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: orbit-spin 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes orbit-spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .grabado-orbit svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Floating sparkles */
+    .grabado-sparkle {
+      position: absolute;
+      font-size: 1.2rem;
+      animation: sparkle-float 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes sparkle-float {
+      0%,100% { transform: translateY(0) scale(1); opacity: 0.6; }
+      50% { transform: translateY(-12px) scale(1.2); opacity: 1; }
+    }
+
+    .grabado-text-side {}
+
+    .grabado-eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--marron);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .grabado-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: var(--verde-oscuro);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .grabado-title em { font-style: italic; color: var(--marron); }
+
+    .grabado-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.12rem;
+      line-height: 1.85;
+      color: #4a4a30;
+      margin-bottom: 20px;
+    }
+
+    .grabado-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .grabado-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+      color: #5a5a40;
+      line-height: 1.5;
+    }
+
+    .grabado-feature-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .grabado-footer {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .grabado-precio-wrap {}
+
+    .grabado-precio-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--verde-claro);
+      margin-bottom: 4px;
+    }
+
+    .grabado-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--marron);
+      line-height: 1;
+    }
+
+    .btn-grabado {
+      background: var(--verde);
+      color: white;
+      padding: 14px 36px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-grabado:hover {
+      background: var(--verde-oscuro);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(74,94,58,0.3);
+    }
+
+    @media (max-width: 900px) {
+      #grabado { padding: 80px 24px; }
+      .grabado-wrapper { grid-template-columns: 1fr; gap: 48px; }
+      .grabado-img-ring { width: 300px; height: 300px; margin: 0 auto; }
+      .grabado-orbit { width: 360px; height: 360px; }
+      .grabado-img-side { justify-content: center; }
+    }
+
+    /* ─── CHATBOT ─── */
+    .chat-fab {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      z-index: 150;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: var(--verde);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 28px rgba(46,61,34,0.35);
+      transition: all 0.3s ease;
+      font-size: 1.5rem;
+    }
+    .chat-fab:hover { background: var(--verde-oscuro); transform: scale(1.08); }
+    .chat-fab .chat-fab-pulse {
+      position: absolute;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--verde);
+      animation: pulse-ring 2s infinite;
+      z-index: -1;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .chat-window {
+      position: fixed;
+      bottom: 106px; right: 32px;
+      z-index: 150;
+      width: 380px;
+      max-width: calc(100vw - 40px);
+      height: 520px;
+      background: var(--crema);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.85) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transform-origin: bottom right;
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .chat-window.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .chat-win-header {
+      background: var(--verde-oscuro);
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .chat-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--verde-claro);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      border: 2px solid var(--beige);
+    }
+    .chat-win-info h4 { font-family: 'Playfair Display', serif; color: var(--beige-claro); font-size: 1rem; margin-bottom: 2px; }
+    .chat-win-info span { font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; }
+    .chat-win-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
+    .chat-win-close:hover { color: white; }
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 20px 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--beige); border-radius: 4px; }
+    .chat-msg {
+      max-width: 82%; padding: 10px 14px; border-radius: 16px;
+      font-size: 0.88rem; line-height: 1.55;
+      animation: msgIn 0.3s ease both;
+    }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .chat-msg.bot { background: white; color: var(--texto); border: 1px solid rgba(212,196,160,0.4); border-bottom-left-radius: 4px; align-self: flex-start; }
+    .chat-msg.user { background: var(--verde); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+    .chat-typing {
+      display: flex; align-items: center; gap: 5px;
+      padding: 10px 14px; background: white;
+      border: 1px solid rgba(212,196,160,0.4);
+      border-radius: 16px; border-bottom-left-radius: 4px;
+      align-self: flex-start; width: fit-content;
+    }
+    .chat-typing span { width: 7px; height: 7px; background: var(--verde-claro); border-radius: 50%; display: inline-block; animation: typing-dot 1.2s infinite; }
+    .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing-dot { 0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+    .chat-quick-replies { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 12px; flex-shrink: 0; }
+    .quick-reply {
+      background: rgba(74,94,58,0.08); border: 1px solid rgba(74,94,58,0.2);
+      color: var(--verde); padding: 5px 12px; border-radius: 20px;
+      font-size: 0.76rem; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+    .quick-reply:hover { background: var(--verde); color: white; border-color: var(--verde); }
+    .chat-input-row {
+      padding: 12px 16px; border-top: 1px solid rgba(212,196,160,0.35);
+      display: flex; gap: 8px; flex-shrink: 0; background: white;
+    }
+    .chat-input {
+      flex: 1; padding: 10px 14px; border: 1px solid rgba(212,196,160,0.5);
+      border-radius: 24px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+      color: var(--texto); background: var(--crema); outline: none; transition: border-color 0.2s;
+    }
+    .chat-input:focus { border-color: var(--verde-claro); }
+    .chat-send {
+      width: 40px; height: 40px; background: var(--verde); color: white;
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.2s, transform 0.2s;
+    }
+    .chat-send:hover { background: var(--verde-oscuro); transform: scale(1.08); }
+    .chat-send:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      nav.scrolled { padding: 10px 24px; }
+      .nav-links { display: none; }
+      #sobre-nosotros, #productos, #resenas, #contacto { padding: 80px 24px; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
+      .resenas-grid { grid-template-columns: 1fr; }
+      .contacto-info { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-cta { flex-direction: column; align-items: center; }
+      .productos-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── DIVIDERS ─── */
+    .divider {
+      width: 100%;
+      height: 80px;
+      overflow: hidden;
+    }
+
+    .divider svg { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+
+<!-- Dynamic background canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <img loading="lazy" src="logo_somos_materos.jpeg" alt="Somos Materos logo" style="width:46px;height:46px;border-radius:50%;object-fit:cover;">
+    <span class="nav-logo-text">Somos Materos</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#sobre-nosotros">Nosotros</a></li>
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#bombillas">Bombillas</a></li><li><a href="#accesorios">Accesorios</a></li><li><a href="#grabado">Grabado</a></li><li><a href="#resenas">Reseñas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-cart" onclick="toggleCart()">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Carrito
+    <span class="cart-badge" id="cart-badge">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <span class="hero-badge">✦ La Plata, Argentina ✦</span>
+    <h1 class="hero-title">Somos <em>Materos</em></h1>
+    <p class="hero-subtitle">Tradición · Identidad · Compartir</p>
+    <p class="hero-desc">Mates artesanales, termos de calidad y accesorios únicos para los que llevan la cultura del mate en el alma.</p>
+    <div class="hero-cta">
+      <a href="#productos" class="btn-primary">Ver Productos</a>
+      <a href="#sobre-nosotros" class="btn-secondary">Nuestra Historia</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Descubrí</span>
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</section>
+
+<!-- SOBRE NOSOTROS -->
+<section id="sobre-nosotros">
+  <div class="sobre-grid">
+    <div class="sobre-img-wrapper reveal">
+      <div class="logo-frame-circular">
+        <img src="logo_somos_materos.jpeg" alt="Somos Materos" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+      </div>
+    </div>
+    <div class="sobre-text reveal">
+      <h2>Una historia que se <em>comparte</em> en ronda</h2>
+      <p>Somos Materos nació en La Plata con una sola idea: que cada mate cuente una historia. Desde nuestro taller seleccionamos a mano cada producto, buscando la mejor calidad para que tu mateada sea perfecta.</p>
+      <p>Creemos en el mate como ritual, como pausa, como encuentro. Por eso trabajamos con artesanos locales y materiales nobles que respetan la tradición y la naturaleza.</p>
+      <div class="sobre-tags">
+        <span class="sobre-tag">🌿 Artesanal</span>
+        <span class="sobre-tag">📍 La Plata</span>
+        <span class="sobre-tag">♻️ Sustentable</span>
+        <span class="sobre-tag">🤝 Local</span>
+        <span class="sobre-tag">💚 Con identidad</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section id="productos">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Lo que tenemos para vos</p>
+    <h2 class="section-title">Nuestros <em>Productos</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="productos-grid" id="productos-grid"></div>
+</section>
+
+
+<!-- BOMBILLAS -->
+<section id="bombillas" style="padding: 0 60px 120px; background: var(--crema); position:relative; z-index:1;">
+  <div class="section-header reveal" style="text-align:left; margin-bottom:40px;">
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--verde-oscuro); border-bottom: 2px solid var(--beige); padding-bottom:10px; display:inline-block;">✦ Bombillas &amp; Bombillones</h3>
+  </div>
+  <div class="bombillas-grid">
+
+    <div class="bombilla-card reveal">
+            <div class="bombilla-carousel-wrap" id="bcar-1">
+        <img id="bcarimg-1" src="images/bombillon-trenzado-1.jpg" alt="Bombillón Trenzado de Alpaca" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="bcar-btn bcar-prev" onclick="bcarMove(1,-1)">&#8249;</button>
+        <button class="bcar-btn bcar-next" onclick="bcarMove(1,1)">&#8250;</button>
+        <div class="bcar-dots" id="bcardots-1">
+          <span class="bcar-dot active"></span>
+          <span class="bcar-dot"></span>
+        </div>
+      </div>
+      <div class="bombilla-body">
+        <span class="bombilla-numero">01</span>
+        <p class="bombilla-category">Bombillón artesanal</p>
+        <h3 class="bombilla-nombre">Bombillón Trenzado de Alpaca</h3>
+        <p class="bombilla-desc">Mango trenzado en alpaca con terminación en pico. Filtrado impecable, agarre firme y ese brillo inconfundible del metal trabajado a mano. Una pieza que dura y se luce.</p>
+        <p class="bombilla-medida">📏 17,5 cm</p>
+        <div class="bombilla-footer">
+          <span class="bombilla-precio">$32.000</span>
+          <button class="btn-agregar" onclick="addToCartBombilla(6, 'Bombillón Trenzado de Alpaca', 32000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bombilla-card reveal">
+            <div class="bombilla-carousel-wrap" id="bcar-2">
+        <img id="bcarimg-2" src="images/bombillon-diamante-1.jpg" alt="Bombillón Diamante" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="bcar-btn bcar-prev" onclick="bcarMove(2,-1)">&#8249;</button>
+        <button class="bcar-btn bcar-next" onclick="bcarMove(2,1)">&#8250;</button>
+        <div class="bcar-dots" id="bcardots-2">
+          <span class="bcar-dot active"></span>
+          <span class="bcar-dot"></span>
+        </div>
+      </div>
+      <div class="bombilla-body">
+        <span class="bombilla-numero">02</span>
+        <p class="bombilla-category">Bombillón artesanal</p>
+        <h3 class="bombilla-nombre">Bombillón Diamante de Alpaca y Bronce</h3>
+        <p class="bombilla-desc">Combinación única de alpaca y bronce con mango trenzado en rombo y terminaciones doradas. Elegante, resistente y con personalidad propia. Para los que quieren destacar en la ronda.</p>
+        <p class="bombilla-medida">📏 17,5 cm</p>
+        <div class="bombilla-footer">
+          <span class="bombilla-precio">$32.000</span>
+          <button class="btn-agregar" onclick="addToCartBombilla(7, 'Bombillón Diamante de Alpaca y Bronce', 32000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bombilla-card reveal">
+      <div class="bombilla-imgs single">
+        <img src="images/bombilla-pico.jpg" alt="Bombilla pico de loro"/ loading="lazy">
+      </div>
+      <div class="bombilla-body">
+        <span class="bombilla-numero">03</span>
+        <p class="bombilla-category">Bombilla clásica</p>
+        <h3 class="bombilla-nombre">Bombilla Pico de Loro</h3>
+        <p class="bombilla-desc">La clásica de toda la vida. Pico de loro en acero inoxidable, diseño simple y filtrado perfecto. Liviana, duradera y compañera fiel de cualquier mate.</p>
+        <p class="bombilla-medida">📏 17 cm · 19 cm</p>
+        <div class="bombilla-footer">
+          <span class="bombilla-precio">$7.000</span>
+          <button class="btn-agregar" onclick="addToCartBombilla(8, 'Bombilla Pico de Loro', 7000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bombilla-card reveal">
+      <div class="bombilla-imgs single">
+        <img src="images/bombillon-recto.jpg" alt="Bombillon recto"/ loading="lazy">
+      </div>
+      <div class="bombilla-body">
+        <span class="bombilla-numero">04</span>
+        <p class="bombilla-category">Bombillón moderno</p>
+        <h3 class="bombilla-nombre">Bombillón Recto</h3>
+        <p class="bombilla-desc">Diseño minimalista y contemporáneo en acero espejado. Largo, recto y de filtrado generoso. Ideal para mates profundos y para los que prefieren lo esencial sin vueltas.</p>
+        <p class="bombilla-medida">📏 17 cm</p>
+        <div class="bombilla-footer">
+          <span class="bombilla-precio">$12.000</span>
+          <button class="btn-agregar" onclick="addToCartBombilla(9, 'Bombillón Recto', 12000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="bombilla-card reveal">
+      <div class="bombilla-carousel-wrap" id="bcar-5">
+        <img id="bcarimg-5" src="images/bombillon-recto-alpaca-1.jpg" alt="Bombillón Recto Alpaca" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="bcar-btn bcar-prev" onclick="bcarMove(5,-1)">&#8249;</button>
+        <button class="bcar-btn bcar-next" onclick="bcarMove(5,1)">&#8250;</button>
+        <div class="bcar-dots" id="bcardots-5">
+          <span class="bcar-dot active"></span>
+          <span class="bcar-dot"></span>
+        </div>
+      </div>
+      <div class="bombilla-body">
+        <span class="bombilla-numero">05</span>
+        <p class="bombilla-category">Bombillón artesanal</p>
+        <h3 class="bombilla-nombre">Bombillón Recto de Alpaca y Bronce</h3>
+        <p class="bombilla-desc">Cuerpo recto en alpaca con detalles en bronce dorado. Equilibrio perfecto entre elegancia y funcionalidad. Filtrado preciso y agarre cómodo para largas mateadas.</p>
+        <p class="bombilla-medida">📏 25 cm</p>
+        <div class="bombilla-footer">
+          <span class="bombilla-precio">$25.000</span>
+          <button class="btn-agregar" onclick="addToCartBombilla(10, 'Bombillón Recto de Alpaca y Bronce', 25000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bombilla-card reveal">
+      <div class="bombilla-carousel-wrap" id="bcar-6">
+        <img id="bcarimg-6" src="images/bombillon-pico-alpaca-1.jpg" alt="Bombillón Pico Alpaca" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="bcar-btn bcar-prev" onclick="bcarMove(6,-1)">&#8249;</button>
+        <button class="bcar-btn bcar-next" onclick="bcarMove(6,1)">&#8250;</button>
+        <div class="bcar-dots" id="bcardots-6">
+          <span class="bcar-dot active"></span>
+          <span class="bcar-dot"></span>
+        </div>
+      </div>
+      <div class="bombilla-body">
+        <span class="bombilla-numero">06</span>
+        <p class="bombilla-category">Bombillón artesanal</p>
+        <h3 class="bombilla-nombre">Bombillón Pico de Loro de Alpaca y Bronce</h3>
+        <p class="bombilla-desc">Pico de loro curvo en alpaca con terminaciones en bronce. La combinación perfecta entre el filtrado clásico del pico de loro y los materiales nobles que nos caracterizan.</p>
+        <p class="bombilla-medida">📏 17 cm</p>
+        <div class="bombilla-footer">
+          <span class="bombilla-precio">$25.000</span>
+          <button class="btn-agregar" onclick="addToCartBombilla(11, 'Bombillón Pico de Loro de Alpaca y Bronce', 25000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ACCESORIOS -->
+<section id="accesorios">
+
+  <!-- Decorative floating bg leaves -->
+  <div class="acc-bg-leaf" style="top:5%; left:2%; animation-delay:0s;">🌿</div>
+  <div class="acc-bg-leaf" style="top:20%; right:3%; animation-delay:2s; font-size:4rem;">🍃</div>
+  <div class="acc-bg-leaf" style="bottom:15%; left:8%; animation-delay:4s; font-size:5rem;">🌿</div>
+  <div class="acc-bg-leaf" style="bottom:5%; right:6%; animation-delay:1s; font-size:3.5rem;">🍃</div>
+
+  <div class="section-header reveal" style="text-align:left; max-width:1200px; margin: 0 auto 48px;">
+    <p class="section-eyebrow">Para completar tu set</p>
+    <h2 class="section-title">Accesorios <em style="color:var(--beige);">Materos</em></h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="acc-grid">
+
+    <!-- HERO: Matera de Cuerina -->
+    <div class="acc-card acc-card-hero reveal" id="acc-matera">
+      <div class="acc-carousel" id="accarousel-1">
+        <img id="accimg-1" src="images/matera-cuerina-1.jpg" alt="Matera de Cuerina" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="acc-car-btn acc-car-prev" onclick="accCarMove(1,-1)">&#8249;</button>
+        <button class="acc-car-btn acc-car-next" onclick="accCarMove(1,1)">&#8250;</button>
+        <div class="acc-car-dots" id="accdots-1">
+          <span class="acc-car-dot active"></span>
+          <span class="acc-car-dot"></span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <span class="acc-badge">✦ Accesorio estrella</span>
+        <h3 class="acc-nombre-lg">Matera de Cuerina</h3>
+        <p class="acc-desc">Porta todo artesanal en cuerina negra con costura blanca y remaches metálicos. Amplia, robusta y con estilo. Lleva tu mate, bombilla, termo y latas en un solo lugar.</p>
+        <p class="acc-medidas">📐 34 cm de alto (con manija) · 16 cm cuerpo · 16 cm largo · 20 cm ancho</p>
+        <div class="acc-footer">
+          <span class="acc-precio">$15.000</span>
+          <button class="btn-acc-lg" onclick="addToCartAcc(12, 'Matera de Cuerina', 15000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Porta mate Negro -->
+    <div class="acc-card acc-card-md reveal" id="acc-porta">
+      <div class="acc-carousel" id="accarousel-2">
+        <img id="accimg-2" src="images/porta-mate-negro-1.jpg" alt="Porta Mate" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="acc-car-btn acc-car-prev" onclick="accCarMove(2,-1)">&#8249;</button>
+        <button class="acc-car-btn acc-car-next" onclick="accCarMove(2,1)">&#8250;</button>
+        <div class="acc-car-dots" id="accdots-2">
+          <span class="acc-car-dot active"></span>
+          <span class="acc-car-dot"></span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <span class="acc-badge">Accesorio</span>
+        <h3 class="acc-nombre">Porta Mate</h3>
+        <div class="acc-swatches" id="acc-porta-swatches">
+          <button class="acc-swatch active" style="background:#1a1a1a; border-color: var(--beige);" title="Negro" onclick="accSwatch(2,0,this,portaMateNegro,portaMateMarron)"></button>
+          <button class="acc-swatch" style="background:#8b5e3c;" title="Marrón claro" onclick="accSwatch(2,1,this,portaMateNegro,portaMateMarron)"></button>
+        </div>
+        <p class="acc-desc" style="font-size:0.88rem;">Funda cilíndrica en cuerina con manija. Protege y transporta tu mate con estilo. Disponible en negro y marrón claro.</p>
+        <div class="acc-footer">
+          <span class="acc-precio">$8.000</span>
+          <button class="btn-acc" onclick="addToCartAcc(13, 'Porta Mate', 8000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Set de latas -->
+    <div class="acc-card acc-card-md reveal">
+      <div class="acc-carousel" id="accarousel-3">
+        <img id="accimg-3" src="images/set-latas-1.jpg" alt="Set de Latas" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <button class="acc-car-btn acc-car-prev" onclick="accCarMove(3,-1)">&#8249;</button>
+        <button class="acc-car-btn acc-car-next" onclick="accCarMove(3,1)">&#8250;</button>
+        <div class="acc-car-dots" id="accdots-3">
+          <span class="acc-car-dot active"></span>
+          <span class="acc-car-dot"></span>
+          <span class="acc-car-dot"></span>
+        </div>
+      </div>
+      <div class="acc-body">
+        <span class="acc-badge">Accesorio</span>
+        <h3 class="acc-nombre">Set de Latas</h3>
+        <p class="acc-desc" style="font-size:0.88rem;">Dos latas herméticas en cuero negro para guardar yerba o azúcar. Tapa con clip de silicona, interior de acero. Vienen en tamaños chica y grande.</p>
+        <div class="acc-footer">
+          <span class="acc-precio">$8.000</span>
+          <button class="btn-acc" onclick="addToCartAcc(14, 'Set de Latas', 8000)">+ Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMBO full width -->
+    <div class="acc-card acc-card-combo reveal">
+      <img src="images/combo-matero.jpg" alt="Combo Matero" class="acc-img-combo"/ loading="lazy">
+      <div class="acc-body">
+        <span class="acc-combo-tag">⭐ Combo especial</span>
+        <h3 class="acc-nombre-lg">Combo Matero</h3>
+        <p class="acc-desc-lg">El kit completo para los que van en serio. Todo lo que necesitás para una mateada perfecta, junto y a precio especial.</p>
+        <p class="acc-combo-includes">
+          ✓ Matera de Cuerina &nbsp;·&nbsp; ✓ Set de Latas (x2)
+        </p>
+        <div class="acc-footer">
+          <div>
+            <span style="font-size:0.8rem; color:rgba(255,255,255,0.4); text-decoration:line-through; display:block;">Valor individual: $23.000</span>
+            <span class="acc-precio-lg">$20.000</span>
+          </div>
+          <button class="btn-acc-lg" onclick="addToCartAcc(15, 'Combo Matero', 20000)">+ Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- GRABADO PERSONALIZADO -->
+<section id="grabado">
+
+  <div class="grabado-wrapper">
+
+    <!-- IMG SIDE -->
+    <div class="grabado-img-side reveal">
+      <div class="grabado-img-ring">
+        <img src="images/grabado-personalizado.jpg" alt="Grabado personalizado en mate"/ loading="lazy">
+      </div>
+
+      <!-- Rotating orbit text -->
+      <div class="grabado-orbit">
+        <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="circle-path" d="M 240,240 m -200,0 a 200,200 0 1,1 400,0 a 200,200 0 1,1 -400,0"/>
+          </defs>
+          <text font-family="Cormorant Garamond, serif" font-size="13" fill="#8b6f47" letter-spacing="6" opacity="0.55">
+            <textPath href="#circle-path">
+              ✦ GRABADO ARTESANAL · ÚNICO E IRREPETIBLE · SOMOS MATEROS · LA PLATA ·&nbsp;
+            </textPath>
+          </text>
+        </svg>
+      </div>
+
+      <!-- Sparkles -->
+      <div class="grabado-sparkle" style="top:8%; right:18%; animation-delay:0s;">✦</div>
+      <div class="grabado-sparkle" style="top:15%; left:12%; animation-delay:0.8s; font-size:0.8rem;">✧</div>
+      <div class="grabado-sparkle" style="bottom:12%; right:10%; animation-delay:1.5s; font-size:0.9rem;">✦</div>
+      <div class="grabado-sparkle" style="bottom:18%; left:16%; animation-delay:0.4s; font-size:0.7rem;">✧</div>
+    </div>
+
+    <!-- TEXT SIDE -->
+    <div class="grabado-text-side reveal">
+      <span class="grabado-eyebrow">✦ Edición única</span>
+      <h2 class="grabado-title">Grabado <em>Personalizado</em></h2>
+
+      <p class="grabado-desc">Convertí tu mate en algo que nadie más tiene en el mundo. Grabamos a mano cualquier texto, frase, nombre, fecha o diseño directamente sobre el aro de tu mate — dejando una huella permanente y única que lo identifica como tuyo para siempre.</p>
+
+      <p class="grabado-desc">Perfecto para regalar en un cumpleaños, aniversario, graduación o simplemente para hacerlo tuyo de verdad. Cada trazo es irrepetible.</p>
+
+      <div class="grabado-features">
+        <div class="grabado-feature">
+          <span class="grabado-feature-icon">✍️</span>
+          <span>Grabado a mano sobre el aro del mate — letras, frases, nombres, fechas o diseños libres</span>
+        </div>
+        <div class="grabado-feature">
+          <span class="grabado-feature-icon">🧉</span>
+          <span>Aplicable a cualquier mate del catálogo que tenga aro disponible para grabar</span>
+        </div>
+        <div class="grabado-feature">
+          <span class="grabado-feature-icon">📦</span>
+          <span>Podés pedirlo junto con tu mate o sobre un mate que ya tengas — coordinamos por WhatsApp</span>
+        </div>
+        <div class="grabado-feature">
+          <span class="grabado-feature-icon">⏱️</span>
+          <span>El grabado se realiza antes del envío, sin demoras en la entrega</span>
+        </div>
+      </div>
+
+      <div class="grabado-footer">
+        <div class="grabado-precio-wrap">
+          <p class="grabado-precio-label">Precio del grabado</p>
+          <p class="grabado-precio">$7.000</p>
+        </div>
+        <button class="btn-grabado" onclick="addToCartAcc(16, 'Grabado Personalizado', 7000)">+ Agregar</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESEÑAS -->
+<section id="resenas">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Lo que dice la gente</p>
+    <h2 class="section-title">Reseñas de <em>Clientes</em></h2>
+    <div class="section-line"></div>
+  </div>
+      <div class="resenas-grid">
+    <div class="resena-card reveal">
+      <div class="resena-stars">★★★★★</div>
+      <p class="resena-texto">"Compré el Torpedo Cincelado con Bolitas en bordo y es una obra de arte. Las bolitas en las patas le dan un toque único, no lo vi en ningún otro lado. Ya lo curé y el primer mate fue perfecto."</p>
+      <div class="resena-autor">
+        <img src="https://i.pravatar.cc/100?img=12" alt="Valentina" class="resena-avatar"/>
+        <div>
+          <p class="resena-nombre">Valentina R.</p>
+          <p class="resena-fecha">Marzo 2025 · La Plata</p>
+        </div>
+      </div>
+    </div>
+    <div class="resena-card reveal">
+      <div class="resena-stars">★★★★★</div>
+      <p class="resena-texto">"El Imperial con base reforzada en marrón es hermoso. Sólido, bien terminado y el herraje en las patas le da una resistencia que se nota. Lo recomiendo sin dudarlo, ya lo tengo hace 3 meses y como nuevo."</p>
+      <div class="resena-autor">
+        <img src="https://i.pravatar.cc/100?img=33" alt="Nicolás" class="resena-avatar"/>
+        <div>
+          <p class="resena-nombre">Nicolás M.</p>
+          <p class="resena-fecha">Febrero 2025 · Berisso</p>
+        </div>
+      </div>
+    </div>
+    <div class="resena-card reveal">
+      <div class="resena-stars">★★★★★</div>
+      <p class="resena-texto">"Le regalé el Ranchero a mi papá por su cumpleaños y se emocionó. Es un mate distinto, pintado a mano, cada uno sale diferente. La presentación fue impecable y la atención de los chicos, de primera."</p>
+      <div class="resena-autor">
+        <img src="https://i.pravatar.cc/100?img=47" alt="Luciana" class="resena-avatar"/>
+        <div>
+          <p class="resena-nombre">Luciana G.</p>
+          <p class="resena-fecha">Abril 2025 · La Plata</p>
+        </div>
+      </div>
+    </div>
+    <div class="resena-card reveal">
+      <div class="resena-stars">★★★★☆</div>
+      <p class="resena-texto">"Pedí el Bombillón Diamante de alpaca y bronce y es una belleza. El acabado en bronce lo hace diferente a todos. Le saco una estrella porque tardó un par de días más de lo esperado, pero valió la pena."</p>
+      <div class="resena-autor">
+        <img src="https://i.pravatar.cc/100?img=22" alt="Federico" class="resena-avatar"/>
+        <div>
+          <p class="resena-nombre">Federico P.</p>
+          <p class="resena-fecha">Enero 2025 · Ensenada</p>
+        </div>
+      </div>
+    </div>
+    <div class="resena-card reveal">
+      <div class="resena-stars">★★★★★</div>
+      <p class="resena-texto">"El Torpedo Cincelado en negro es una locura de lindo. Lo combino con el Bombillón Trenzado de alpaca y queda espectacular. El filtrado del bombillón es perfecto, cero yerba en la boca."</p>
+      <div class="resena-autor">
+        <img src="https://i.pravatar.cc/100?img=5" alt="Sofía" class="resena-avatar"/>
+        <div>
+          <p class="resena-nombre">Sofía T.</p>
+          <p class="resena-fecha">Mayo 2025 · La Plata</p>
+        </div>
+      </div>
+    </div>
+    <div class="resena-card reveal">
+      <div class="resena-stars">★★★★★</div>
+      <p class="resena-texto">"Compré el Imperial en negro y la Bombilla Pico de Loro. Los dos llegaron bien embalados y en perfecto estado. El mate tiene una presencia increíble, el cuero negro con el aro plateado es una combinación ganadora."</p>
+      <div class="resena-autor">
+        <img src="https://i.pravatar.cc/100?img=60" alt="Martín" class="resena-avatar"/>
+        <div>
+          <p class="resena-nombre">Martín A.</p>
+          <p class="resena-fecha">Marzo 2025 · La Plata</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-header reveal">
+    <p class="section-eyebrow">Hablemos</p>
+    <h2 class="section-title">Escribinos por <em>WhatsApp</em></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contacto-wrapper">
+    <div class="reveal">
+      <div class="form-group">
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre" placeholder="¿Cómo te llamás?"/>
+      </div>
+      <div class="form-group">
+        <label for="mensaje">Tu mensaje</label>
+        <textarea id="mensaje" placeholder="Contanos en qué te podemos ayudar, qué producto te interesa o cualquier consulta…"></textarea>
+      </div>
+      <button class="btn-whatsapp" onclick="enviarWhatsApp()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.115 1.528 5.843L.057 23.5l5.797-1.519A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.371l-.359-.213-3.722.976.993-3.635-.234-.374A9.792 9.792 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+        Enviar mensaje por WhatsApp
+      </button>
+    </div>
+
+    <div class="contacto-info reveal">
+      <div class="contacto-info-item">
+        <div class="contacto-info-icon">📍</div>
+        <p class="contacto-info-label">Ubicación</p>
+        <p class="contacto-info-value">La Plata, Buenos Aires</p>
+      </div>
+      <div class="contacto-info-item">
+        <div class="contacto-info-icon">🕐</div>
+        <p class="contacto-info-label">Horario</p>
+        <p class="contacto-info-value">24 hs</p>
+      </div>
+      <div class="contacto-info-item">
+        <div class="contacto-info-icon">📱</div>
+        <p class="contacto-info-label">Instagram</p>
+        <p class="contacto-info-value">@somosmateros</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">Somos Materos</p>
+  <p>La Plata, Buenos Aires · Argentina</p>
+  <p style="margin-top: 8px; font-size: 0.75rem; opacity: 0.5;">© 2025 Somos Materos · Todos los derechos reservados</p>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>Tu Carrito 🧉</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty">
+      <p>Tu carrito está vacío.<br/>¡Agregá algún producto!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cart-total-val">$0</span>
+    </div>
+    <button class="btn-checkout" onclick="checkoutWA()">Confirmar pedido</button>
+    <button class="btn-checkout-wa" onclick="checkoutWA()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.555 4.115 1.528 5.843L.057 23.5l5.797-1.519A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.371l-.359-.213-3.722.976.993-3.635-.234-.374A9.792 9.792 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      Pagar vía WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CANVAS BACKGROUND: floating leaves / particles ───
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  const count = Math.floor(W / 18);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 1.5 + Math.random() * 3,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: -0.15 - Math.random() * 0.3,
+      opacity: 0.15 + Math.random() * 0.35,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.01,
+      type: Math.random() > 0.6 ? 'leaf' : 'dot'
+    });
+  }
+}
+
+function drawLeaf(x, y, size, rot, alpha) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.globalAlpha = alpha;
+  ctx.beginPath();
+  ctx.fillStyle = '#4a5e3a';
+  ctx.moveTo(0, -size * 2);
+  ctx.bezierCurveTo(size * 1.5, -size, size * 1.5, size, 0, size * 2);
+  ctx.bezierCurveTo(-size * 1.5, size, -size * 1.5, -size, 0, -size * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.dx;
+    p.y += p.dy;
+    p.rot += p.rotSpeed;
+    if (p.y < -20) p.y = H + 20;
+    if (p.x < -20) p.x = W + 20;
+    if (p.x > W + 20) p.x = -20;
+    if (p.type === 'leaf') {
+      drawLeaf(p.x, p.y, p.r, p.rot, p.opacity);
+    } else {
+      ctx.save();
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = '#8b6f47';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  });
+  requestAnimationFrame(animate);
+}
+
+resize();
+initParticles();
+animate();
+window.addEventListener('resize', () => { resize(); initParticles(); });
+
+// ─── SMART LAZY PRELOADER (por sección) ───
+function preloadUrls(urls) {
+  (urls || []).forEach(url => {
+    if (url && !url.startsWith('data:')) { const i = new Image(); i.src = url; }
+  });
+}
+window.addEventListener('load', () => {
+  // Solo precargar la primera imagen de cada producto (visible por defecto)
+  setTimeout(() => {
+    if (typeof productos !== 'undefined') {
+      productos.forEach(p => { if (p.imgs && p.imgs[0]) { const i = new Image(); i.src = p.imgs[0]; } });
+    }
+    // Lazy: cargar resto de imágenes cuando la sección entra al viewport
+    const lazyObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id || entry.target.closest('[id]')?.id;
+        if (id === 'productos' || entry.target.closest('#productos')) {
+          if (typeof productos !== 'undefined') productos.forEach(p => preloadUrls(p.imgs));
+        }
+        if (id === 'bombillas' || entry.target.closest('#bombillas')) {
+          if (typeof bcarImgs !== 'undefined') Object.values(bcarImgs).forEach(imgs => preloadUrls(imgs));
+        }
+        if (id === 'accesorios' || entry.target.closest('#accesorios')) {
+          if (typeof accCarImgs !== 'undefined') Object.values(accCarImgs).forEach(imgs => preloadUrls(imgs));
+          if (typeof portaMateNegro !== 'undefined') preloadUrls([...portaMateNegro, ...portaMateMarron]);
+        }
+        lazyObs.unobserve(entry.target);
+      });
+    }, { rootMargin: '300px' });
+    ['#productos','#bombillas','#accesorios'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) lazyObs.observe(el);
+    });
+  }, 200);
+});
+
+// ─── NAV SCROLL ───
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ─── REVEAL ON SCROLL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── PRODUCTS DATA ───
+const productos = [
+  {
+    id: 1,
+    nombre: 'Torpedo Cincelado con Bolitas',
+    desc: 'Mate artesanal en cuero con aro cincelado y detalles de bolitas en las patas. Elegante, firme y con una presencia que se nota desde el primer mate.',
+    precio: 38000, badge: null,
+    colorVariants: [
+      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
+    ],
+    imgs: ['images/torpedo-bolitas-bordo-1.jpg', 'images/torpedo-bolitas-bordo-2.jpg', 'images/torpedo-bolitas-bordo-3.jpg', 'images/torpedo-bolitas-negro-1.jpg', 'images/torpedo-bolitas-negro-2.jpg', 'images/torpedo-bolitas-negro-3.jpg']
+  },
+  {
+    id: 2,
+    nombre: 'Imperial',
+    desc: 'Mate de cuero con base plana y aro cuadriculado. Diseño clásico y robusto, ideal para quienes buscan comodidad y estilo en su mateada diaria.',
+    precio: 29500, badge: 'Oferta',
+    colorVariants: [
+      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
+    ],
+    imgs: ['images/imperial-bordo-1.jpg', 'images/imperial-bordo-2.jpg', 'images/imperial-bordo-3.jpg', 'images/imperial-negro-1.jpg', 'images/imperial-negro-2.jpg', 'images/imperial-negro-3.jpg']
+  },
+  {
+    id: 3,
+    nombre: 'Imperial con base reforzada',
+    desc: 'Versión reforzada del Imperial, con herraje en las patas para mayor durabilidad. Cuero de primera calidad trabajado a mano, pensado para durar toda la vida.',
+    precio: 37900, badge: null,
+    colorVariants: [
+      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
+      { color: 'marron', label: 'Marrón', hex: '#7a4a2a', offset: 3 }
+    ],
+    imgs: ['images/imperial-reforzada-bordo-1.jpg', 'images/imperial-reforzada-bordo-2.jpg', 'images/imperial-reforzada-bordo-3.jpg', 'images/imperial-reforzada-marron-1.jpg', 'images/imperial-reforzada-marron-2.jpg', 'images/imperial-reforzada-marron-3.jpg']
+  },
+  {
+    id: 4,
+    nombre: 'Ranchero',
+    desc: 'Mate de madera pintada a mano en blanco y dorado con formas orgánicas únicas. Cada pieza es distinta porque la naturaleza manda. Arte y tradición en un solo objeto.',
+    precio: 32000, badge: null, colorVariants: null,
+    imgs: ['images/ranchero-1.jpg', 'images/ranchero-2.jpg', 'images/ranchero-3.jpg']
+  },
+  {
+    id: 5,
+    nombre: 'Torpedo Cincelado',
+    desc: 'Forma torpedo en cuero con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter. El clásico de toda buena colección.',
+    precio: 32500, badge: null,
+    colorVariants: [
+      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
+    ],
+    imgs: ['images/torpedo-cincelado-bordo-1.jpg', 'images/torpedo-cincelado-bordo-2.jpg', 'images/torpedo-cincelado-bordo-3.jpg', 'images/torpedo-cincelado-negro-1.jpg', 'images/torpedo-cincelado-negro-2.jpg', 'images/torpedo-cincelado-negro-1.jpg']
+  }
+];
+
+function formatPrecio(n) {
+  return '$' + n.toLocaleString('es-AR');
+}
+
+const carouselState = {};
+
+function getCarImgs(prod, offset) {
+  if (prod.colorVariants) return prod.imgs.slice(offset, offset+3);
+  return prod.imgs;
+}
+
+function renderProductos() {
+  const grid = document.getElementById('productos-grid');
+
+  // Section title
+  const titulo = `<div class="productos-seccion-titulo reveal" style="grid-column:1/-1; text-align:left; margin-bottom:8px;">
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--verde-oscuro); border-bottom: 2px solid var(--beige); padding-bottom:10px; display:inline-block;">🧉 Mates</h3>
+  </div>`;
+
+  grid.innerHTML = titulo + productos.map(p => {
+    const swatches = p.colorVariants ? `
+      <div class="color-swatches" id="swatches-${p.id}">
+        ${p.colorVariants.map((v,i) => `
+          <button class="color-swatch ${i===0?'active':''}"
+            style="background:${v.hex}; ${v.color==='negro'?'border: 2px solid #555;':''}"
+            title="${v.label}"
+            onclick="switchVariant(${p.id},${v.offset},this)"></button>
+        `).join('')}
+      </div>` : '';
+    const imgCount = p.colorVariants ? 3 : p.imgs.length;
+    const dots = [...Array(imgCount)].map((_,i) =>
+      `<span class="car-dot${i===0?' active':''}" onclick="carGoTo(${p.id},${i},event)"></span>`
+    ).join('');
+    return `
+    <div class="producto-card reveal" id="card-${p.id}">
+      <div class="producto-img-wrapper">
+        ${p.badge ? `<span class="producto-badge">${p.badge}</span>` : ''}
+        <div class="carousel" id="carousel-${p.id}">
+          <img src="${p.imgs[0]}" alt="${p.nombre}" class="producto-img" id="carimg-${p.id}"/>
+          <button class="car-btn car-prev" onclick="carMove(${p.id},-1,event)">&#8249;</button>
+          <button class="car-btn car-next" onclick="carMove(${p.id},1,event)">&#8250;</button>
+          <div class="car-dots" id="dots-${p.id}">${dots}</div>
+        </div>
+      </div>
+      <div class="producto-info">
+        <h3 class="producto-nombre">${p.nombre}</h3>
+        ${swatches}
+        <p class="producto-desc">${p.desc}</p>
+        <div class="producto-footer">
+          <span class="producto-precio">${formatPrecio(p.precio)}</span>
+          <button class="btn-agregar" id="btn-${p.id}" onclick="addToCart(${p.id})">+ Agregar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.producto-card.reveal, .productos-seccion-titulo.reveal').forEach(el => observer.observe(el));
+  productos.forEach(p => { carouselState[p.id] = { idx: 0, offset: 0 }; });
+}
+
+function carMove(id, dir, e) {
+  e && e.stopPropagation();
+  const prod = productos.find(p=>p.id===id);
+  const state = carouselState[id];
+  const imgs = getCarImgs(prod, state.offset);
+  state.idx = (state.idx + dir + imgs.length) % imgs.length;
+  updateCarousel(id);
+}
+
+function carGoTo(id, idx, e) {
+  e.stopPropagation();
+  carouselState[id].idx = idx;
+  updateCarousel(id);
+}
+
+function updateCarousel(id) {
+  const prod = productos.find(p=>p.id===id);
+  const state = carouselState[id];
+  const imgs = getCarImgs(prod, state.offset);
+  const img = document.getElementById('carimg-'+id);
+  const dotsEl = document.getElementById('dots-'+id);
+  if (img) {
+    img.src = imgs[state.idx];
+  }
+  if (dotsEl) {
+    [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===state.idx));
+  }
+}
+
+function switchVariant(id, offset, btn) {
+  const state = carouselState[id];
+  state.offset = offset;
+  state.idx = 0;
+  updateCarousel(id);
+  const sw = document.getElementById('swatches-'+id);
+  if (sw) [...sw.children].forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+renderProductos();
+
+// ─── CART LOGIC ───
+let cart = [];
+
+function addToCart(id) {
+  const prod = productos.find(p => p.id === id);
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...prod, qty: 1 });
+  }
+  renderCart();
+  updateBadge();
+  showToast(`✓ ${prod.nombre} agregado`);
+  const btn = document.getElementById(`btn-${id}`);
+  if (btn) {
+    btn.textContent = '✓ Agregado';
+    btn.classList.add('added');
+    setTimeout(() => { btn.textContent = '+ Agregar'; btn.classList.remove('added'); }, 1500);
+  }
+}
+
+function updateBadge() {
+  const badge = document.getElementById('cart-badge');
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  if (total > 0) {
+    badge.style.display = 'flex';
+    badge.textContent = total;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function renderCart() {
+  const container = document.getElementById('cart-items');
+  const footer = document.getElementById('cart-footer');
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="cart-empty"><p>Tu carrito está vacío.<br/>¡Agregá algún producto!</p></div>';
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = 'block';
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <img src="${item.img}" alt="${item.nombre}" onerror="this.src='https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=60&q=80'"/>
+      <div class="cart-item-info">
+        <p class="cart-item-name">${item.nombre}</p>
+        <p class="cart-item-price">${formatPrecio(item.precio)}</p>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+        </div>
+      </div>
+      <button class="cart-remove" onclick="removeItem(${item.id})" title="Eliminar">🗑</button>
+    </div>
+  `).join('');
+  const total = cart.reduce((s, i) => s + i.precio * i.qty, 0);
+  document.getElementById('cart-total-val').textContent = formatPrecio(total);
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  renderCart();
+  updateBadge();
+}
+
+function removeItem(id) {
+  cart = cart.filter(i => i.id !== id);
+  renderCart();
+  updateBadge();
+}
+
+function toggleCart() {
+  const drawer = document.getElementById('cart-drawer');
+  const overlay = document.getElementById('cart-overlay');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
+function openWA(phone, msg) {
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function checkoutWA() {
+  if (cart.length === 0) return;
+  const phone = '5492213634633';
+  const items = cart.map(i => `• ${i.nombre} x${i.qty} = ${formatPrecio(i.precio * i.qty)}`).join('\n');
+  const total = cart.reduce((s, i) => s + i.precio * i.qty, 0);
+  const msg = `Hola! Quiero hacer el siguiente pedido:\n\n${items}\n\n*Total: ${formatPrecio(total)}*\n\nMuchas gracias!`;
+  openWA(phone, msg);
+}
+
+// ─── WHATSAPP FORM ───
+function enviarWhatsApp() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const mensaje = document.getElementById('mensaje').value.trim();
+  if (!nombre || !mensaje) {
+    showToast('⚠️ Completá tu nombre y mensaje');
+    return;
+  }
+  const phone = '5492213634633';
+  const text = `Hola! Soy *${nombre}*. ${mensaje}`;
+  openWA(phone, text);
+}
+
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+<!-- CHATBOT FAB -->
+<button class="chat-fab" id="chat-fab" onclick="toggleChat()" title="Chateá con Mateo">
+  <div class="chat-fab-pulse"></div>
+  🧉
+</button>
+
+<!-- CHATBOT WINDOW -->
+<div class="chat-window" id="chat-window">
+  <div class="chat-win-header">
+    <div class="chat-avatar">🧉</div>
+    <div class="chat-win-info">
+      <h4>Mateo · Asistente</h4>
+      <span>Bot de Somos Materos · La Plata</span>
+    </div>
+    <button class="chat-win-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-quick-replies" id="chat-quick-replies"></div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Escribí tu pregunta…" onkeydown="if(event.key==='Enter') sendChat()"/>
+    <button class="chat-send" id="chat-send" onclick="sendChat()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+
+
+
+// ─── PORTA MATE VARIANTS ───
+const portaMateNegro = ['images/porta-mate-negro-1.jpg','images/porta-mate-negro-2.jpg'];
+const portaMateMarron = ['images/porta-mate-marron-1.jpg','images/porta-mate-marron-2.jpg'];
+// ─── BOMBILLA CAROUSEL ───
+const bcarImgs = {
+  1: ["images/bombillon-trenzado-1.jpg", "images/bombillon-trenzado-2.jpg"],
+  2: ["images/bombillon-diamante-1.jpg", "images/bombillon-diamante-2.jpg"],
+  5: ['images/bombillon-recto-alpaca-1.jpg', 'images/bombillon-recto-alpaca-2.jpg'],
+  6: ['images/bombillon-pico-alpaca-1.jpg', 'images/bombillon-pico-alpaca-2.jpg'],
+};
+
+const bcarState = {};
+function bcarMove(cid, dir) {
+  if (bcarState[cid] === undefined) bcarState[cid] = 0;
+  const imgs = bcarImgs[cid];
+  bcarState[cid] = (bcarState[cid] + dir + imgs.length) % imgs.length;
+  const img = document.getElementById('bcarimg-' + cid);
+  const dotsEl = document.getElementById('bcardots-' + cid);
+  img.src = imgs[bcarState[cid]];
+  if (dotsEl) [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === bcarState[cid]));
+}
+
+// Inicializar src de carruseles de bombillas desde bcarImgs
+document.addEventListener('DOMContentLoaded', () => {
+  Object.entries(bcarImgs).forEach(([cid, imgs]) => {
+    const img = document.getElementById('bcarimg-' + cid);
+    if (img && imgs[0]) img.src = imgs[0];
+    bcarState[cid] = 0;
+  });
+  // Inicializar carruseles de accesorios desde accCarImgs
+  Object.entries(accCarImgs).forEach(([cid, imgs]) => {
+    const img = document.getElementById('accimg-' + cid);
+    if (img && imgs[0]) img.src = imgs[0];
+    accCarState[cid] = 0;
+  });
+});
+
+// ─── BOMBILLA ADD TO CART ───
+function addToCartBombilla(id, nombre, precio) {
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id, nombre, precio, qty: 1, img: '' });
+  }
+  renderCart();
+  updateBadge();
+  showToast('✓ ' + nombre + ' agregado');
+  // Brief button feedback
+  event.target.textContent = '✓ Agregado';
+  event.target.style.background = 'var(--marron)';
+  setTimeout(() => {
+    event.target.textContent = '+ Agregar';
+    event.target.style.background = '';
+  }, 1500);
+}
+
+
+// ─── ACCESORIOS CAROUSEL ───
+const accCarImgs = {
+  1: ['images/matera-cuerina-1.jpg', 'images/matera-cuerina-2.jpg'],
+  2: ['images/porta-mate-negro-1.jpg', 'images/porta-mate-negro-2.jpg'],
+  3: ['images/set-latas-1.jpg', 'images/set-latas-2.jpg', 'images/set-latas-3.jpg']
+};
+
+const accCarState = {};
+function accCarMove(cid, dir) {
+  if (accCarState[cid] === undefined) accCarState[cid] = 0;
+  const imgs = accCarImgs[cid];
+  accCarState[cid] = (accCarState[cid] + dir + imgs.length) % imgs.length;
+  const img = document.getElementById('accimg-'+cid);
+  const dotsEl = document.getElementById('accdots-'+cid);
+  img.src = imgs[accCarState[cid]];
+  if (dotsEl) [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===accCarState[cid]));
+}
+
+function accSwatch(cid, variantIdx, btn, imgs1, imgs2) {
+  const allImgs = variantIdx === 0 ? imgs1 : imgs2;
+  accCarImgs[cid] = allImgs;
+  accCarState[cid] = 0;
+  const img = document.getElementById('accimg-'+cid);
+  img.src = allImgs[0];
+  const dotsEl = document.getElementById('accdots-'+cid);
+  if (dotsEl) [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===0));
+  const wrap = btn.closest('.acc-swatches');
+  if (wrap) [...wrap.children].forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function addToCartAcc(id, nombre, precio) {
+  const existing = cart.find(i => i.id === id);
+  if (existing) { existing.qty++; }
+  else { cart.push({ id, nombre, precio, qty: 1, img: '' }); }
+  renderCart();
+  updateBadge();
+  showToast('✓ ' + nombre + ' agregado');
+  event.target.textContent = '✓ Agregado';
+  const orig = event.target.classList.contains('btn-acc-lg') ? '+ Agregar al carrito' : '+ Agregar';
+  setTimeout(() => { event.target.textContent = orig; }, 1500);
+}
+
+// ─── CHATBOT LOCAL ───
+const responses = [
+  {
+    keys: ['precio', 'cuanto sale', 'cuánto sale', 'cuanto cuesta', 'cuánto cuesta', 'valor', 'precios'],
+    answer: `Estos son nuestros precios actuales 🧉\n\n<b>Mates:</b>\n• Torpedo Cincelado con Bolitas — $38.000\n• Imperial — $37.900 (¡en oferta!)\n• Imperial Reforzada — $37.900\n• Ranchero — $32.000\n• Torpedo Cincelado — $32.500\n\n<b>Bombillas y Bombillones:</b>\n• Bombillón Trenzado de Alpaca — $30.000\n• Bombillón Diamante Alpaca y Bronce — $30.000\n• Bombillón Recto — $12.000\n• Bombilla Pico de Loro — $7.000`
+  },
+  {
+    keys: ['torpedo cincelado con bolitas', 'torpedo con bolitas', 'bolitas'],
+    answer: `El <b>Torpedo Cincelado con Bolitas</b> vale $38.000 y está disponible en <b>Bordo y Negro</b> 🟤⚫\n\nTiene aro cincelado artesanal y detalles de bolitas en las patas. Es uno de nuestros modelos más llamativos y resistentes. Podés elegir el color desde la sección de productos.`
+  },
+  {
+    keys: ['imperial con base reforzada', 'base reforzada', 'reforzada'],
+    answer: `El <b>Imperial con base reforzada</b> vale $37.900 y está disponible en <b>Bordo y Marrón</b> 🟤🟫\n\nEs la versión más robusta del Imperial, con herraje en las patas para mayor durabilidad. Ideal para uso intensivo diario.`
+  },
+  {
+    keys: ['imperial con base', 'imperial'],
+    answer: `El <b>Imperial</b> vale $37.900 y está en <b>oferta</b> 🎉 Disponible en <b>Bordo y Negro</b> 🟤⚫\n\nTiene base plana y aro cuadriculado. Es uno de los más estables y cómodos para matear todos los días.`
+  },
+  {
+    keys: ['ranchero'],
+    answer: `El <b>Ranchero</b> vale $32.000 🎨\n\nEs un mate de madera pintada a mano en blanco y dorado. Cada pieza es única porque depende de la madera natural. Si buscás algo distinto y artístico, este es tu mate.`
+  },
+  {
+    keys: ['torpedo cincelado', 'torpedo'],
+    answer: `El <b>Torpedo Cincelado</b> vale $32.500 y está disponible en <b>Bordo y Negro</b> 🟤⚫\n\nForma torpedo con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter.`
+  },
+  {
+    keys: ['bombillon trenzado', 'bombillón trenzado', 'trenzado de alpaca', 'trenzado alpaca'],
+    answer: `El <b>Bombillón Trenzado de Alpaca</b> vale $30.000 ✨\n\nTiene mango trenzado en alpaca con terminación en pico. El filtrado es impecable y el agarre es firme. Ideal para cualquier mate de cuero de nuestra colección.`
+  },
+  {
+    keys: ['diamante', 'alpaca y bronce', 'alpaca bronce'],
+    answer: `El <b>Bombillón Diamante de Alpaca y Bronce</b> vale $30.000 ✨\n\nTiene mango trenzado en rombo con terminaciones doradas en bronce. Es el más elegante de nuestra colección, perfecto para regalar o para los que quieren destacar.`
+  },
+  {
+    keys: ['bombillon recto', 'bombillón recto', 'recto'],
+    answer: `El <b>Bombillón Recto</b> vale $12.000 🔧\n\nDiseño minimalista en acero espejado. Es largo, recto y de filtrado generoso. Ideal para mates profundos como el Imperial o el Torpedo.`
+  },
+  {
+    keys: ['pico de loro', 'bombilla pico', 'bombilla clasica', 'bombilla clásica'],
+    answer: `La <b>Bombilla Pico de Loro</b> vale $7.000 ⚡\n\nEs la clásica de toda la vida: acero inoxidable, liviana y duradera. Funciona perfectamente con cualquier mate de nuestra colección.`
+  },
+  {
+    keys: ['bombilla', 'bombillon', 'bombillón'],
+    answer: `Tenemos 4 opciones de bombillas y bombillones:\n\n• <b>Bombillón Trenzado de Alpaca</b> — $32.000\n• <b>Bombillón Diamante Alpaca y Bronce</b> — $32.000\n• <b>Bombillón Recto</b> — $12.000\n• <b>Bombilla Pico de Loro</b> — $7.000\n\n¿Sobre cuál querés saber más?`
+  },
+  {
+    keys: ['colores', 'color', 'negro', 'bordo', 'bordó', 'marron', 'marrón'],
+    answer: `Los colores disponibles por modelo son:\n\n• Torpedo Cincelado con Bolitas → <b>Bordo / Negro</b>\n• Imperial → <b>Bordo / Negro</b>\n• Imperial Reforzada → <b>Bordo / Marrón</b>\n• Torpedo Cincelado → <b>Bordo / Negro</b>\n• Ranchero → <b>Blanco y Dorado</b> (pintado a mano)\n\nPodés elegir el color haciendo click en los iconos de colores en cada producto.`
+  },
+  {
+    keys: ['oferta', 'descuento', 'promocion', 'promoción'],
+    answer: `¡Sí! Actualmente el <b>Imperial</b> está en oferta a $37.900 🎉\n\nEs uno de nuestros modelos más populares, disponible en Bordo y Negro. ¡Aprovechalo antes de que se acabe!`
+  },
+  {
+    keys: ['recomendar', 'recomendas', 'recomendás', 'cual elijo', 'cuál elijo', 'cual compro', 'cuál compro', 'para empezar', 'primer mate'],
+    answer: `Para empezar te recomiendo el <b>Imperial</b> ($37.900, en oferta 🎉). Es estable, cómodo y con muy buen precio.\n\nSi buscás algo más artístico y único, el <b>Ranchero</b> ($32.000) es pintado a mano y cada pieza es diferente.\n\nPara el bombillón, el <b>Bombillón Trenzado de Alpaca</b> es el más elegante y combina con todos los modelos.`
+  },
+  {
+    keys: ['curar', 'curado', 'como se cura', 'cómo se cura', 'curar mate'],
+    answer: `Para curar tu mate nuevo:\n\n1️⃣ Llenalo con yerba húmeda y dejalo reposar 24hs\n2️⃣ Raspá suavemente el interior con la bombilla sin llegar a la calabaza\n3️⃣ Repetí el proceso 2 o 3 veces\n\nPara mates de madera como el Ranchero, también podés frotar el interior con un poco de aceite de cocina antes del proceso. ¡Después de curado, el mate mejora con cada cebada!`
+  },
+  {
+    keys: ['limpiar', 'limpieza', 'lavar', 'mantenimiento', 'cuidado', 'cuidar'],
+    answer: `Para cuidar tu mate:\n\n🧉 <b>Cuero:</b> Pasale agua caliente después de cada uso. Secalo al aire, nunca al sol directo.\n🪵 <b>Madera (Ranchero):</b> Igual que el cuero, evitá el remojo prolongado.\n\nPara la <b>bombilla</b>: pasale agua caliente luego de cada uso. Una vez por semana usá un cepillito fino para limpiar el tubo. Evitá detergentes agresivos.`
+  },
+  {
+    keys: ['mojar', 'agua', 'resistente', 'cuero agua'],
+    answer: `Sí, los mates de cuero están tratados para el uso diario con agua caliente sin problema 💧\n\nSolo evitá sumergirlos o dejarlos en remojo por mucho tiempo. Después de usarlos, secalos al aire y van a durar muchísimo.`
+  },
+  {
+    keys: ['diferencia', 'bombilla vs', 'cuál es mejor bombilla', 'cual es mejor bombilla'],
+    answer: `La diferencia principal es el tamaño:\n\n• <b>Bombilla</b> (Pico de Loro, $7.000): más corta y fina, ideal para mates medianos o pequeños.\n• <b>Bombillón</b> (Trenzado, Diamante o Recto): más largo, mejor para mates profundos o con mucha yerba.\n\nSi tenés un Imperial o un Torpedo, cualquier bombillón de los nuestros le va perfecto.`
+  },
+  {
+    keys: ['pedido', 'como compro', 'cómo compro', 'como pido', 'cómo pido', 'comprar', 'hacer pedido'],
+    answer: `¡Muy fácil! Tenés dos opciones:\n\n🛒 <b>Desde la página:</b> elegí tus productos, agregalos al carrito y confirmá el pedido.\n\nUna vez confirmado, coordinamos el pago y el envío por WhatsApp. ¡Es así de simple!`
+  },
+  {
+    keys: ['envio', 'envío', 'envios', 'envíos', 'mandan', 'llega', 'despacho', 'despachan'],
+    answer: `Sí, hacemos envíos a todo el país 📦\n\nUna vez que confirmás el pedido desde la página, coordinamos el envío por WhatsApp. Los tiempos dependen de la localidad, generalmente 1 a 3 días para La Plata y alrededores.`
+  },
+  {
+    keys: ['pago', 'pagar', 'tarjeta', 'mercado pago', 'transferencia', 'efectivo'],
+    answer: `Por ahora el pago se coordina por WhatsApp luego de confirmar el pedido desde la página 💳\n\nPróximamente vamos a habilitar el pago online con Mercado Pago directamente acá. ¡Estamos trabajando en eso!`
+  },
+  {
+    keys: ['local', 'tienda', 'donde estan', 'dónde están', 'direccion', 'dirección', 'fisico', 'físico'],
+    answer: `Somos un emprendimiento online de <b>La Plata, Buenos Aires</b> 📍\n\nTrabajamos de forma digital para llegar a todo el país. Si sos de La Plata y querés coordinar una entrega en mano, ¡con gusto lo arreglamos por WhatsApp!`
+  },
+  {
+    keys: ['horario', 'horarios', 'atienden', 'cuando atienden', 'cuándo atienden'],
+    answer: `Nuestro horario de atención es <b>24 hs</b> ⏰\n\nFuera de ese horario podés escribirnos igual y te respondemos en cuanto podamos.`
+  },
+  {
+    keys: ['garantia', 'garantía', 'devolucion', 'devolución', 'problema', 'roto', 'defecto'],
+    answer: `Todos nuestros productos tienen garantía por defectos de fabricación 🛡️\n\nSi al recibir el producto hay algún problema, escribinos al WhatsApp con una foto y lo resolvemos. Nuestra prioridad es que quedes contento con tu compra.`
+  },
+  {
+    keys: ['regalo', 'regalar', 'packaging', 'cumpleaños', 'dia del padre', 'dia de la madre'],
+    answer: `¡Claro que sí! Cualquier mate o bombillón hace un regalo increíble 🎁\n\nTenemos opciones de packaging para regalo. El combo más popular para regalar es el <b>Ranchero</b> (único y artístico) o el <b>Imperial Reforzada</b> (duradero y elegante). Coordinamos todo por WhatsApp.`
+  },
+  {
+    keys: ['yerba', 'que yerba', 'qué yerba'],
+    answer: `Para empezar, cualquier yerba tradicional va bien 🌿\n\nAlgunas populares:\n• <b>Suaves:</b> Amanda, Taragüi, Playadito\n• <b>Más amargas:</b> Rosamonte, Cruz de Malta\n• <b>Con hierbas:</b> Pajarito, Canarias\n\nLo ideal es probar hasta encontrar la que más te gusta. ¡El mate mejora con práctica!`
+  },
+  {
+    keys: ['instagram', 'redes', 'seguir', 'red social'],
+    answer: `Nos encontrás en Instagram como <b>@somosmateros</b> 📱\n\n¡Seguinos para ver las novedades, nuevos productos y contenido matero!`
+  },
+  {
+    keys: ['hola', 'buenas', 'buen dia', 'buen día', 'buenas tardes', 'buenas noches', 'hey'],
+    answer: `¡Hola! Bienvenido a <b>Somos Materos</b> 🧉\n\nSoy Mateo, tu asistente. Puedo ayudarte con precios, productos, cómo curar tu mate, envíos y más. ¿En qué te puedo ayudar hoy?`
+  },
+  {
+    keys: ['gracias', 'muchas gracias', 'genial', 'perfecto', 'buenisimo', 'buenísimo'],
+    answer: `¡De nada! Un placer ayudarte 🧉 Si tenés alguna otra consulta, acá estoy. ¡Que disfrutes el mate!`
+  }
+];
+
+const quickReplies = [
+  '¿Cuáles son los precios?',
+  '¿Qué mate me recomendás?',
+  '¿Cómo se cura un mate?',
+  '¿Hacen envíos?',
+  '¿Tienen productos en oferta?',
+  '¿Cómo compro?',
+];
+
+function getBotResponse(text) {
+  const lower = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  for (const r of responses) {
+    for (const k of r.keys) {
+      const kn = k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      if (lower.includes(kn)) return r.answer;
+    }
+  }
+  return `Mmm, no estoy seguro de esa consulta puntual 🤔 Pero puedo ayudarte con:\n\n• <b>Precios y productos</b> → "¿cuáles son los precios?"\n• <b>Recomendaciones</b> → "¿qué mate me recomendás?"\n• <b>Cuidado del mate</b> → "¿cómo se cura un mate?"\n• <b>Envíos y pedidos</b> → "¿cómo compro?"\n\n¿Sobre qué querés saber?`;
+}
+
+let chatOpen = false;
+let chatInitialized = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-window').classList.toggle('open', chatOpen);
+  if (chatOpen && !chatInitialized) {
+    chatInitialized = true;
+    initChat();
+  }
+}
+
+function initChat() {
+  addBotMessage('¡Hola! Soy Mateo, el asistente de <b>Somos Materos</b> 🧉<br>Puedo responder tus preguntas sobre productos, precios, envíos y más. ¿En qué te ayudo?');
+  renderQuickReplies();
+}
+
+function addBotMessage(html_content) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.innerHTML = html_content;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addUserMessage(text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg user';
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function renderQuickReplies() {
+  const container = document.getElementById('chat-quick-replies');
+  container.innerHTML = quickReplies.map(q =>
+    `<button class="quick-reply" onclick="sendQuick('${q.replace(/'/g,"\\'")}')">${q}</button>`
+  ).join('');
+}
+
+function sendQuick(text) {
+  document.getElementById('chat-quick-replies').innerHTML = '';
+  processMessage(text);
+}
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  document.getElementById('chat-quick-replies').innerHTML = '';
+  processMessage(text);
+}
+
+function processMessage(text) {
+  addUserMessage(text);
+  // Simulate short typing delay
+  const msgs = document.getElementById('chat-messages');
+  const typing = document.createElement('div');
+  typing.className = 'chat-typing';
+  typing.id = 'chat-typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(() => {
+    const t = document.getElementById('chat-typing');
+    if (t) t.remove();
+    const reply = getBotResponse(text);
+    addBotMessage(reply);
+    setTimeout(renderQuickReplies, 300);
+  }, 600);
+}
+</script>
