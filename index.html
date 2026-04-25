@@ -889,6 +889,16 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    /* ─── CAROUSEL SLIDE ─── */
+    @keyframes car-slide-in-right  { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes car-slide-in-left   { from { transform: translateX(-40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes car-slide-out-left  { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-40px); opacity: 0; } }
+    @keyframes car-slide-out-right { from { transform: translateX(0); opacity: 1; } to { transform: translateX(40px); opacity: 0; } }
+    .car-slide-in-r  { animation: car-slide-in-right  0.28s ease both; }
+    .car-slide-in-l  { animation: car-slide-in-left   0.28s ease both; }
+    .car-slide-out-l { animation: car-slide-out-left  0.18s ease both; }
+    .car-slide-out-r { animation: car-slide-out-right 0.18s ease both; }
+
     /* ─── ANIMATIONS ─── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -2527,23 +2537,28 @@ function carMove(id, dir, e) {
   const state = carouselState[id];
   const imgs = getCarImgs(prod, state.offset);
   state.idx = (state.idx + dir + imgs.length) % imgs.length;
-  updateCarousel(id);
+  updateCarousel(id, dir);
 }
 
 function carGoTo(id, idx, e) {
   e.stopPropagation();
+  const prev = carouselState[id].idx;
   carouselState[id].idx = idx;
-  updateCarousel(id);
+  updateCarousel(id, idx > prev ? 1 : -1);
 }
 
-function updateCarousel(id) {
+function updateCarousel(id, dir) {
   const prod = productos.find(p=>p.id===id);
   const state = carouselState[id];
   const imgs = getCarImgs(prod, state.offset);
   const img = document.getElementById('carimg-'+id);
   const dotsEl = document.getElementById('dots-'+id);
   if (img) {
-    img.src = imgs[state.idx];
+    if (dir !== undefined) {
+      slideImg(img, dir, imgs[state.idx], null, state.idx);
+    } else {
+      img.src = imgs[state.idx];
+    }
   }
   if (dotsEl) {
     [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===state.idx));
@@ -2730,14 +2745,35 @@ const bcarImgs = {
 };
 
 const bcarState = {};
+const carAnimatingSet = new WeakSet();
+
+function slideImg(img, dir, newSrc, dotsEl, newIdx) {
+  if (carAnimatingSet.has(img)) return;
+  carAnimatingSet.add(img);
+  const outCls = dir > 0 ? 'car-slide-out-l' : 'car-slide-out-r';
+  const inCls  = dir > 0 ? 'car-slide-in-r'  : 'car-slide-in-l';
+  const preload = new Image();
+  preload.src = newSrc;
+  const doSlide = () => {
+    img.classList.add(outCls);
+    setTimeout(() => {
+      img.src = newSrc;
+      img.classList.remove(outCls);
+      img.classList.add(inCls);
+      if (dotsEl) [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === newIdx));
+      setTimeout(() => { img.classList.remove(inCls); carAnimatingSet.delete(img); }, 280);
+    }, 180);
+  };
+  if (preload.complete) { doSlide(); } else { preload.onload = doSlide; preload.onerror = doSlide; }
+}
+
 function bcarMove(cid, dir) {
   if (bcarState[cid] === undefined) bcarState[cid] = 0;
   const imgs = bcarImgs[cid];
   bcarState[cid] = (bcarState[cid] + dir + imgs.length) % imgs.length;
   const img = document.getElementById('bcarimg-' + cid);
   const dotsEl = document.getElementById('bcardots-' + cid);
-  img.src = imgs[bcarState[cid]];
-  if (dotsEl) [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === bcarState[cid]));
+  slideImg(img, dir, imgs[bcarState[cid]], dotsEl, bcarState[cid]);
 }
 
 // Inicializar src de carruseles de bombillas desde bcarImgs
@@ -2790,8 +2826,7 @@ function accCarMove(cid, dir) {
   accCarState[cid] = (accCarState[cid] + dir + imgs.length) % imgs.length;
   const img = document.getElementById('accimg-'+cid);
   const dotsEl = document.getElementById('accdots-'+cid);
-  img.src = imgs[accCarState[cid]];
-  if (dotsEl) [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===accCarState[cid]));
+  slideImg(img, dir, imgs[accCarState[cid]], dotsEl, accCarState[cid]);
 }
 
 function accSwatch(cid, variantIdx, btn, imgs1, imgs2) {
