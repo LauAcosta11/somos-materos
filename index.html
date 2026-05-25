@@ -2406,6 +2406,25 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ─── PRODUCTS DATA ───
 const productos = [
   {
+    id: 20,
+    nombre: 'Torpedo Cincelado al Lacre (Avejentado)',
+    desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
+    precio: 45000, badge: 'Nuevo',
+    colorVariants: null,
+    imgs: ['images/torpedo-lacre-avejentado-1.jpg', 'images/torpedo-lacre-avejentado-2.jpg']
+  },
+  {
+    id: 21,
+    nombre: 'Torpedo Cincelado al Lacre',
+    desc: 'Torpedo en cuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido. Disponible en Borravino y Negro.',
+    precio: 42000, badge: 'Nuevo',
+    colorVariants: [
+      { color: 'borravino', label: 'Borravino', hex: '#6e1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 1 }
+    ],
+    imgs: ['images/torpedo-lacre-borravino-1.jpg', 'images/torpedo-lacre-negro-1.jpg']
+  },
+  {
     id: 1,
     nombre: 'Torpedo Cincelado con Bolitas',
     desc: 'Mate artesanal en cuero con aro cincelado y detalles de bolitas en las patas. Elegante, firme y con una presencia que se nota desde el primer mate.',
@@ -2415,6 +2434,17 @@ const productos = [
       { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
     ],
     imgs: ['images/torpedo-bolitas-bordo-1.jpg', 'images/torpedo-bolitas-bordo-2.jpg', 'images/torpedo-bolitas-bordo-3.jpg', 'images/torpedo-bolitas-negro-1.jpg', 'images/torpedo-bolitas-negro-2.jpg', 'images/torpedo-bolitas-negro-3.jpg']
+  },
+  {
+    id: 5,
+    nombre: 'Torpedo Cincelado',
+    desc: 'Forma torpedo en cuero con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter. El clásico de toda buena colección.',
+    precio: 32500, badge: null,
+    colorVariants: [
+      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
+    ],
+    imgs: ['images/torpedo-cincelado-bordo-1.jpg', 'images/torpedo-cincelado-bordo-2.jpg', 'images/torpedo-cincelado-bordo-3.jpg', 'images/torpedo-cincelado-negro-1.jpg', 'images/torpedo-cincelado-negro-2.jpg', 'images/torpedo-cincelado-negro-1.jpg']
   },
   {
     id: 2,
@@ -2439,6 +2469,14 @@ const productos = [
     imgs: ['images/imperial-reforzada-bordo-1.jpg', 'images/imperial-reforzada-bordo-2.jpg', 'images/imperial-reforzada-bordo-3.jpg', 'images/imperial-reforzada-marron-1.jpg', 'images/imperial-reforzada-marron-2.jpg', 'images/imperial-reforzada-marron-3.jpg']
   },
   {
+    id: 22,
+    nombre: 'Imperial de Algarrobo',
+    desc: 'Mate imperial torneado en madera de algarrobo con aro cincelado de arabescos. La madera noble le da una calidez y textura únicos. Una pieza artesanal de colección.',
+    precio: 24000, badge: 'Nuevo',
+    colorVariants: null,
+    imgs: ['images/imperial-algarrobo-1.jpg', 'images/imperial-algarrobo-2.jpg']
+  },
+  {
     id: 4,
     nombre: 'Ranchero',
     desc: 'Mate de madera pintada a mano en blanco y dorado con formas orgánicas únicas. Cada pieza es distinta porque la naturaleza manda. Arte y tradición en un solo objeto.',
@@ -2446,15 +2484,12 @@ const productos = [
     imgs: ['images/ranchero-1.jpg', 'images/ranchero-2.jpg', 'images/ranchero-3.jpg']
   },
   {
-    id: 5,
-    nombre: 'Torpedo Cincelado',
-    desc: 'Forma torpedo en cuero con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter. El clásico de toda buena colección.',
-    precio: 32500, badge: null,
-    colorVariants: [
-      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
-      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
-    ],
-    imgs: ['images/torpedo-cincelado-bordo-1.jpg', 'images/torpedo-cincelado-bordo-2.jpg', 'images/torpedo-cincelado-bordo-3.jpg', 'images/torpedo-cincelado-negro-1.jpg', 'images/torpedo-cincelado-negro-2.jpg', 'images/torpedo-cincelado-negro-1.jpg']
+    id: 23,
+    nombre: 'Camionero de Algarrobo',
+    desc: 'Mate camionero torneado en madera de algarrobo macizo con aro liso de alpaca. Forma clásica y robusta, ideal para largas mateadas. La madera de algarrobo le da un aroma y sabor incomparables.',
+    precio: 14500, badge: 'Nuevo',
+    colorVariants: null,
+    imgs: ['images/camionero-algarrobo-1.jpg', 'images/camionero-algarrobo-2.jpg']
   }
 ];
 
@@ -2837,7 +2872,7 @@ function addToCartAcc(id, nombre, precio) {
 const responses = [
   {
     keys: ['precio', 'cuanto sale', 'cuánto sale', 'cuanto cuesta', 'cuánto cuesta', 'valor', 'precios'],
-    answer: `Estos son nuestros precios actuales 🧉\n\n<b>Mates:</b>\n• Torpedo Cincelado con Bolitas — $38.000\n• Imperial — $29.500\n• Imperial Reforzada — $37.900\n• Ranchero — $32.000\n• Torpedo Cincelado — $32.500\n\n<b>Bombillas y Bombillones:</b>\n• Bombillón Trenzado de Alpaca — $32.000\n• Bombillón Diamante Alpaca y Bronce — $32.000\n• Bombillón Recto — $12.000\n• Bombilla Pico de Loro — $7.000`
+    answer: `Estos son nuestros precios actuales 🧉\n\n<b>Mates:</b>\n• Torpedo al Lacre Avejentado — $45.000 ✨ Nuevo\n• Torpedo al Lacre — $42.000 ✨ Nuevo\n• Torpedo con Bolitas — $38.000\n• Imperial Reforzada — $37.900\n• Ranchero — $32.000\n• Torpedo Cincelado — $32.500\n• Imperial — $29.500 🎉 Oferta\n• Imperial de Algarrobo — $24.000 ✨ Nuevo\n• Camionero de Algarrobo — $14.500 ✨ Nuevo\n\n<b>Bombillas y Bombillones:</b>\n• Bombillón Trenzado de Alpaca — $32.000\n• Bombillón Diamante Alpaca y Bronce — $32.000\n• Bombillón Recto — $12.000\n• Bombilla Pico de Loro — $7.000`
   },
   {
     keys: ['torpedo cincelado con bolitas', 'torpedo con bolitas', 'bolitas'],
@@ -2856,8 +2891,24 @@ const responses = [
     answer: `El <b>Ranchero</b> vale $32.000 🎨\n\nEs un mate de madera pintada a mano en blanco y dorado. Cada pieza es única porque depende de la madera natural. Si buscás algo distinto y artístico, este es tu mate.`
   },
   {
+    keys: ['torpedo lacre avejentado', 'lacre avejentado', 'avejentado'],
+    answer: `El <b>Torpedo Cincelado al Lacre (Avejentado)</b> vale $45.000 ✨\n\nCuero lacrado con acabado avejentado único. Aro cincelado con motivos florales y base con patas de madera. Una pieza irrepetible que mejora con el uso.`
+  },
+  {
+    keys: ['torpedo lacre', 'torpedo al lacre', 'lacre'],
+    answer: `El <b>Torpedo Cincelado al Lacre</b> vale $42.000 y está disponible en <b>Borravino y Negro</b> 🟤⚫\n\nCuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido.`
+  },
+  {
+    keys: ['camionero algarrobo', 'camionero de algarrobo'],
+    answer: `El <b>Camionero de Algarrobo</b> vale $14.500 🪵\n\nTorneado en madera de algarrobo macizo con aro liso de alpaca. Forma clásica y robusta, ideal para largas mateadas.`
+  },
+  {
+    keys: ['imperial algarrobo', 'imperial de algarrobo', 'algarrobo'],
+    answer: `El <b>Imperial de Algarrobo</b> vale $24.000 🪵\n\nTorneado en madera de algarrobo con aro cincelado de arabescos. La madera noble le da una calidez y textura únicos.`
+  },
+  {
     keys: ['torpedo cincelado', 'torpedo'],
-    answer: `El <b>Torpedo Cincelado</b> vale $32.500 y está disponible en <b>Bordo y Negro</b> 🟤⚫\n\nForma torpedo con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter.`
+    answer: `Tenemos 4 modelos torpedo:\n\n• <b>Torpedo al Lacre (Avejentado)</b> — $45.000 ✨\n• <b>Torpedo al Lacre</b> — $42.000 (Borravino/Negro)\n• <b>Torpedo con Bolitas</b> — $38.000 (Bordo/Negro)\n• <b>Torpedo Cincelado</b> — $32.500 (Bordo/Negro)\n\n¿Sobre cuál querés saber más?`
   },
   {
     keys: ['bombillon trenzado', 'bombillón trenzado', 'trenzado de alpaca', 'trenzado alpaca'],
