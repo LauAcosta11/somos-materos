@@ -2411,7 +2411,7 @@ const productos = [
     desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
     precio: 45000, badge: 'Nuevo',
     colorVariants: null,
-    imgs: ['images/torpedo-lacre-avejentado-1.jpg', 'images/torpedo-lacre-avejentado-2.jpg']
+    imgs: ['images/torpedo-lacre-avejentado-1.jpg']
   },
   {
     id: 21,
@@ -2532,9 +2532,9 @@ function renderProductos() {
         ${p.badge ? `<span class="producto-badge">${p.badge}</span>` : ''}
         <div class="carousel" id="carousel-${p.id}">
           <img src="${p.imgs[0]}" alt="${p.nombre}" class="producto-img" id="carimg-${p.id}"/>
-          <button class="car-btn car-prev" onclick="carMove(${p.id},-1,event)">&#8249;</button>
-          <button class="car-btn car-next" onclick="carMove(${p.id},1,event)">&#8250;</button>
-          <div class="car-dots" id="dots-${p.id}">${dots}</div>
+          ${imgCount > 1 ? `<button class="car-btn car-prev" onclick="carMove(${p.id},-1,event)">&#8249;</button>` : ''}
+          ${imgCount > 1 ? `<button class="car-btn car-next" onclick="carMove(${p.id},1,event)">&#8250;</button>` : ''}
+          ${imgCount > 1 ? `<div class="car-dots" id="dots-${p.id}">${dots}</div>` : ''}
         </div>
       </div>
       <div class="producto-info">
