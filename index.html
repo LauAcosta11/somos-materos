@@ -889,13 +889,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ─── CAROUSEL FADE ─── */
-    .producto-img,
-    [id^="bcarimg-"],
-    [id^="accimg-"] {
-      transition: opacity 0.2s ease;
-    }
-
     /* ─── ANIMATIONS ─── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -1742,7 +1735,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">
-    <img loading="lazy" src="logo_somos_materos.jpeg" alt="Somos Materos logo" style="width:46px;height:46px;border-radius:50%;object-fit:cover;">
+    <img src="logo_somos_materos.jpeg" alt="Somos Materos Logo" onerror="this.style.display='none'"/>
     <span class="nav-logo-text">Somos Materos</span>
   </a>
   <ul class="nav-links">
@@ -1781,7 +1774,7 @@
   <div class="sobre-grid">
     <div class="sobre-img-wrapper reveal">
       <div class="logo-frame-circular">
-        <img src="logo_somos_materos.jpeg" alt="Somos Materos" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+        <img src="logo_somos_materos.jpeg" alt="Somos Materos" class="logo-circular-img"/>
       </div>
     </div>
     <div class="sobre-text reveal">
@@ -1819,7 +1812,7 @@
 
     <div class="bombilla-card reveal">
             <div class="bombilla-carousel-wrap" id="bcar-1">
-        <img id="bcarimg-1" src="images/bombillon-trenzado-1.jpg" alt="Bombillón Trenzado de Alpaca" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/bombillon-trenzado-1.jpg" alt="Bombillon trenzado de alpaca" class="bombilla-carousel-img" id="bcarimg-1"/>
         <button class="bcar-btn bcar-prev" onclick="bcarMove(1,-1)">&#8249;</button>
         <button class="bcar-btn bcar-next" onclick="bcarMove(1,1)">&#8250;</button>
         <div class="bcar-dots" id="bcardots-1">
@@ -1842,7 +1835,7 @@
 
     <div class="bombilla-card reveal">
             <div class="bombilla-carousel-wrap" id="bcar-2">
-        <img id="bcarimg-2" src="images/bombillon-diamante-1.jpg" alt="Bombillón Diamante" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/bombillon-diamante-1.jpg" alt="Bombillon Diamante" class="bombilla-carousel-img" id="bcarimg-2"/>
         <button class="bcar-btn bcar-prev" onclick="bcarMove(2,-1)">&#8249;</button>
         <button class="bcar-btn bcar-next" onclick="bcarMove(2,1)">&#8250;</button>
         <div class="bcar-dots" id="bcardots-2">
@@ -1865,7 +1858,7 @@
 
     <div class="bombilla-card reveal">
       <div class="bombilla-imgs single">
-        <img src="images/bombilla-pico.jpg" alt="Bombilla pico de loro"/ loading="lazy">
+        <img src="images/bombilla-pico.jpg" alt="Bombilla pico de loro"/>
       </div>
       <div class="bombilla-body">
         <span class="bombilla-numero">03</span>
@@ -1882,7 +1875,7 @@
 
     <div class="bombilla-card reveal">
       <div class="bombilla-imgs single">
-        <img src="images/bombillon-recto.jpg" alt="Bombillon recto"/ loading="lazy">
+        <img src="images/bombillon-recto.jpg" alt="Bombillon recto"/>
       </div>
       <div class="bombilla-body">
         <span class="bombilla-numero">04</span>
@@ -1900,7 +1893,7 @@
 
     <div class="bombilla-card reveal">
       <div class="bombilla-carousel-wrap" id="bcar-5">
-        <img id="bcarimg-5" src="images/bombillon-recto-alpaca-1.jpg" alt="Bombillón Recto Alpaca" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/bombillon-recto-alpaca-1.jpg" alt="Bombillon recto de alpaca y bronce" class="bombilla-carousel-img" id="bcarimg-5"/>
         <button class="bcar-btn bcar-prev" onclick="bcarMove(5,-1)">&#8249;</button>
         <button class="bcar-btn bcar-next" onclick="bcarMove(5,1)">&#8250;</button>
         <div class="bcar-dots" id="bcardots-5">
@@ -1923,7 +1916,7 @@
 
     <div class="bombilla-card reveal">
       <div class="bombilla-carousel-wrap" id="bcar-6">
-        <img id="bcarimg-6" src="images/bombillon-pico-alpaca-1.jpg" alt="Bombillón Pico Alpaca" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/bombillon-pico-alpaca-1.jpg" alt="Bombillon pico de loro de alpaca y bronce" class="bombilla-carousel-img" id="bcarimg-6"/>
         <button class="bcar-btn bcar-prev" onclick="bcarMove(6,-1)">&#8249;</button>
         <button class="bcar-btn bcar-next" onclick="bcarMove(6,1)">&#8250;</button>
         <div class="bcar-dots" id="bcardots-6">
@@ -1968,7 +1961,7 @@
     <!-- HERO: Matera de Cuerina -->
     <div class="acc-card acc-card-hero reveal" id="acc-matera">
       <div class="acc-carousel" id="accarousel-1">
-        <img id="accimg-1" src="images/matera-cuerina-1.jpg" alt="Matera de Cuerina" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/matera-cuerina-1.jpg" alt="Matera de Cuerina" class="acc-img" id="accimg-1" style="min-height:480px;"/>
         <button class="acc-car-btn acc-car-prev" onclick="accCarMove(1,-1)">&#8249;</button>
         <button class="acc-car-btn acc-car-next" onclick="accCarMove(1,1)">&#8250;</button>
         <div class="acc-car-dots" id="accdots-1">
@@ -1991,7 +1984,7 @@
     <!-- Porta mate Negro -->
     <div class="acc-card acc-card-md reveal" id="acc-porta">
       <div class="acc-carousel" id="accarousel-2">
-        <img id="accimg-2" src="images/porta-mate-negro-1.jpg" alt="Porta Mate" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/porta-mate-negro-1.jpg" alt="Porta mate" class="acc-img" id="accimg-2" style="height:240px; object-fit:contain; background:#111; padding:12px;"/>
         <button class="acc-car-btn acc-car-prev" onclick="accCarMove(2,-1)">&#8249;</button>
         <button class="acc-car-btn acc-car-next" onclick="accCarMove(2,1)">&#8250;</button>
         <div class="acc-car-dots" id="accdots-2">
@@ -2003,8 +1996,8 @@
         <span class="acc-badge">Accesorio</span>
         <h3 class="acc-nombre">Porta Mate</h3>
         <div class="acc-swatches" id="acc-porta-swatches">
-          <button class="acc-swatch active" style="background:#1a1a1a; border-color: var(--beige);" title="Negro" onclick="accSwatch(2,0,this,portaMateNegro,portaMateMarron)"></button>
-          <button class="acc-swatch" style="background:#8b5e3c;" title="Marrón claro" onclick="accSwatch(2,1,this,portaMateNegro,portaMateMarron)"></button>
+          <button class="acc-swatch active" style="background:#1a1a1a; border-color: var(--beige);" title="Negro" onclick="accSwatch(2,0,this,['images/porta-mate-negro-1.jpg','images/porta-mate-negro-2.jpg'],['images/porta-mate-marron-1.jpg','images/porta-mate-marron-2.jpg'])"></button>
+          <button class="acc-swatch" style="background:#8b5e3c;" title="Marrón claro" onclick="accSwatch(2,1,this,['images/porta-mate-negro-1.jpg','images/porta-mate-negro-2.jpg'],['images/porta-mate-marron-1.jpg','images/porta-mate-marron-2.jpg'])"></button>
         </div>
         <p class="acc-desc" style="font-size:0.88rem;">Funda cilíndrica en cuerina con manija. Protege y transporta tu mate con estilo. Disponible en negro y marrón claro.</p>
         <div class="acc-footer">
@@ -2017,7 +2010,7 @@
     <!-- Set de latas -->
     <div class="acc-card acc-card-md reveal">
       <div class="acc-carousel" id="accarousel-3">
-        <img id="accimg-3" src="images/set-latas-1.jpg" alt="Set de Latas" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/set-latas-1.jpg" alt="Set de latas" class="acc-img" id="accimg-3" style="height:200px;"/>
         <button class="acc-car-btn acc-car-prev" onclick="accCarMove(3,-1)">&#8249;</button>
         <button class="acc-car-btn acc-car-next" onclick="accCarMove(3,1)">&#8250;</button>
         <div class="acc-car-dots" id="accdots-3">
@@ -2039,7 +2032,7 @@
 
     <!-- COMBO full width -->
     <div class="acc-card acc-card-combo reveal">
-      <img src="images/combo-matero.jpg" alt="Combo Matero" class="acc-img-combo"/ loading="lazy">
+      <img src="images/combo-matero.jpg" alt="Combo Matero" class="acc-img-combo"/>
       <div class="acc-body">
         <span class="acc-combo-tag">⭐ Combo especial</span>
         <h3 class="acc-nombre-lg">Combo Matero</h3>
@@ -2069,7 +2062,7 @@
     <!-- IMG SIDE -->
     <div class="grabado-img-side reveal">
       <div class="grabado-img-ring">
-        <img src="images/grabado-personalizado.jpg" alt="Grabado personalizado en mate"/ loading="lazy">
+        <img src="images/grabado-personalizado.jpg" alt="Grabado personalizado en mate"/>
       </div>
 
       <!-- Rotating orbit text -->
@@ -2154,7 +2147,7 @@
     </div>
     <div class="resena-card reveal">
       <div class="resena-stars">★★★★★</div>
-      <p class="resena-texto">"El Imperial con base reforzada en marrón es hermoso. Sólido, bien terminado y el herraje en las patas le da una resistencia que se nota. Lo recomiendo sin dudarlo, ya lo tengo hace 3 meses y como nuevo."</p>
+      <p class="resena-texto">"El Imperial Reforzada en marrón es hermoso. Sólido, bien terminado y el herraje en las patas le da una resistencia que se nota. Lo recomiendo sin dudarlo, ya lo tengo hace 3 meses y como nuevo."</p>
       <div class="resena-autor">
         <img src="https://i.pravatar.cc/100?img=33" alt="Nicolás" class="resena-avatar"/>
         <div>
@@ -2360,33 +2353,6 @@ initParticles();
 animate();
 window.addEventListener('resize', () => { resize(); initParticles(); });
 
-// ─── SMART LAZY PRELOADER (por sección) ───
-function preloadUrls(urls) {
-  (urls || []).forEach(url => {
-    if (url && !url.startsWith('data:')) { const i = new Image(); i.src = url; }
-  });
-}
-window.addEventListener('load', () => {
-  // Precargar TODAS las imágenes en segundo plano apenas carga la página
-  setTimeout(() => {
-    const allImgs = [];
-    if (typeof productos !== 'undefined') productos.forEach(p => p.imgs && allImgs.push(...p.imgs));
-    if (typeof bcarImgs !== 'undefined') Object.values(bcarImgs).forEach(imgs => allImgs.push(...imgs));
-    if (typeof accCarImgs !== 'undefined') Object.values(accCarImgs).forEach(imgs => allImgs.push(...imgs));
-    if (typeof portaMateNegro !== 'undefined') allImgs.push(...portaMateNegro, ...portaMateMarron);
-    // Cargar de a una para no saturar la red
-    let i = 0;
-    function loadNext() {
-      if (i >= allImgs.length) return;
-      const img = new Image();
-      img.onload = img.onerror = () => { i++; loadNext(); };
-      img.src = allImgs[i];
-    }
-    // Lanzar 3 descargas en paralelo
-    loadNext(); loadNext(); loadNext();
-  }, 800); // Esperar a que cargue lo visible primero
-});
-
 // ─── NAV SCROLL ───
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
@@ -2406,25 +2372,6 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ─── PRODUCTS DATA ───
 const productos = [
   {
-    id: 20,
-    nombre: 'Torpedo Cincelado al Lacre (Avejentado)',
-    desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
-    precio: 45000, badge: 'Nuevo',
-    colorVariants: null,
-    imgs: ['images/torpedo-lacre-avejentado-1.jpg']
-  },
-  {
-    id: 21,
-    nombre: 'Torpedo Cincelado al Lacre',
-    desc: 'Torpedo en cuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido. Disponible en Borravino y Negro.',
-    precio: 42000, badge: 'Nuevo',
-    colorVariants: [
-      { color: 'borravino', label: 'Borravino', hex: '#6e1a2a', offset: 0 },
-      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 1 }
-    ],
-    imgs: ['images/torpedo-lacre-borravino-1.jpg', 'images/torpedo-lacre-negro-1.jpg']
-  },
-  {
     id: 1,
     nombre: 'Torpedo Cincelado con Bolitas',
     desc: 'Mate artesanal en cuero con aro cincelado y detalles de bolitas en las patas. Elegante, firme y con una presencia que se nota desde el primer mate.',
@@ -2433,18 +2380,7 @@ const productos = [
       { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
       { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
     ],
-    imgs: ['images/torpedo-bolitas-bordo-1.jpg', 'images/torpedo-bolitas-bordo-2.jpg', 'images/torpedo-bolitas-bordo-3.jpg', 'images/torpedo-bolitas-negro-1.jpg', 'images/torpedo-bolitas-negro-2.jpg', 'images/torpedo-bolitas-negro-3.jpg']
-  },
-  {
-    id: 5,
-    nombre: 'Torpedo Cincelado',
-    desc: 'Forma torpedo en cuero con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter. El clásico de toda buena colección.',
-    precio: 32500, badge: null,
-    colorVariants: [
-      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
-      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
-    ],
-    imgs: ['images/torpedo-cincelado-bordo-1.jpg', 'images/torpedo-cincelado-bordo-2.jpg', 'images/torpedo-cincelado-bordo-3.jpg', 'images/torpedo-cincelado-negro-1.jpg', 'images/torpedo-cincelado-negro-2.jpg', 'images/torpedo-cincelado-negro-1.jpg']
+    imgs: ['images/torpedo-bolitas-bordo-1.jpg','images/torpedo-bolitas-bordo-2.jpg','images/torpedo-bolitas-bordo-3.jpg','images/torpedo-bolitas-negro-1.jpg','images/torpedo-bolitas-negro-2.jpg','images/torpedo-bolitas-negro-3.jpg']
   },
   {
     id: 2,
@@ -2455,41 +2391,68 @@ const productos = [
       { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
       { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
     ],
-    imgs: ['images/imperial-bordo-1.jpg', 'images/imperial-bordo-2.jpg', 'images/imperial-bordo-3.jpg', 'images/imperial-negro-1.jpg', 'images/imperial-negro-2.jpg', 'images/imperial-negro-3.jpg']
+    imgs: ['images/imperial-bordo-1.jpg','images/imperial-bordo-2.jpg','images/imperial-bordo-3.jpg','images/imperial-negro-1.jpg','images/imperial-negro-2.jpg','images/imperial-negro-3.jpg']
   },
   {
     id: 3,
-    nombre: 'Imperial con base reforzada',
+    nombre: 'Imperial con Base Reforzada',
     desc: 'Versión reforzada del Imperial, con herraje en las patas para mayor durabilidad. Cuero de primera calidad trabajado a mano, pensado para durar toda la vida.',
     precio: 37900, badge: null,
     colorVariants: [
       { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
       { color: 'marron', label: 'Marrón', hex: '#7a4a2a', offset: 3 }
     ],
-    imgs: ['images/imperial-reforzada-bordo-1.jpg', 'images/imperial-reforzada-bordo-2.jpg', 'images/imperial-reforzada-bordo-3.jpg', 'images/imperial-reforzada-marron-1.jpg', 'images/imperial-reforzada-marron-2.jpg', 'images/imperial-reforzada-marron-3.jpg']
-  },
-  {
-    id: 22,
-    nombre: 'Imperial de Algarrobo',
-    desc: 'Mate imperial torneado en madera de algarrobo con aro cincelado de arabescos. La madera noble le da una calidez y textura únicos. Una pieza artesanal de colección.',
-    precio: 24000, badge: 'Nuevo',
-    colorVariants: null,
-    imgs: ['images/imperial-algarrobo-1.jpg', 'images/imperial-algarrobo-2.jpg']
+    imgs: ['images/imperial-reforzada-bordo-1.jpg','images/imperial-reforzada-bordo-2.jpg','images/imperial-reforzada-bordo-3.jpg','images/imperial-reforzada-marron-1.jpg','images/imperial-reforzada-marron-2.jpg','images/imperial-reforzada-marron-3.jpg']
   },
   {
     id: 4,
     nombre: 'Ranchero',
     desc: 'Mate de madera pintada a mano en blanco y dorado con formas orgánicas únicas. Cada pieza es distinta porque la naturaleza manda. Arte y tradición en un solo objeto.',
     precio: 32000, badge: null, colorVariants: null,
-    imgs: ['images/ranchero-1.jpg', 'images/ranchero-2.jpg', 'images/ranchero-3.jpg']
+    imgs: ['images/ranchero-1.jpg','images/ranchero-2.jpg','images/ranchero-3.jpg']
   },
   {
-    id: 23,
+    id: 5,
+    nombre: 'Torpedo Cincelado',
+    desc: 'Forma torpedo en cuero con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter. El clásico de toda buena colección.',
+    precio: 32500, badge: null,
+    colorVariants: [
+      { color: 'bordo', label: 'Bordo', hex: '#6e1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 3 }
+    ],
+    imgs: ['images/torpedo-cincelado-bordo-1.jpg','images/torpedo-cincelado-bordo-2.jpg','images/torpedo-cincelado-bordo-3.jpg','images/torpedo-cincelado-negro-1.jpg','images/torpedo-cincelado-negro-2.jpg']
+  },
+  {
+    id: 6,
+    nombre: 'Imperial de Algarrobo',
+    desc: 'Mate imperial torneado en madera de algarrobo con aro cincelado de arabescos. La madera noble le da una calidez y textura únicos. Una pieza artesanal de colección.',
+    precio: 24000, badge: 'Nuevo', colorVariants: null,
+    imgs: ['images/imperial-algarrobo-1.jpg','images/imperial-algarrobo-2.jpg']
+  },
+  {
+    id: 7,
     nombre: 'Camionero de Algarrobo',
     desc: 'Mate camionero torneado en madera de algarrobo macizo con aro liso de alpaca. Forma clásica y robusta, ideal para largas mateadas. La madera de algarrobo le da un aroma y sabor incomparables.',
-    precio: 14500, badge: 'Nuevo',
-    colorVariants: null,
-    imgs: ['images/camionero-algarrobo-1.jpg', 'images/camionero-algarrobo-2.jpg']
+    precio: 14500, badge: 'Nuevo', colorVariants: null,
+    imgs: ['images/camionero-algarrobo-1.jpg','images/camionero-algarrobo-2.jpg']
+  },
+  {
+    id: 8,
+    nombre: 'Torpedo Cincelado al Lacre (Avejentado)',
+    desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
+    precio: 45000, badge: 'Nuevo', colorVariants: null,
+    imgs: ['images/torpedo-lacre-avejentado-1.jpg','images/torpedo-lacre-avejentado-2.jpg']
+  },
+  {
+    id: 9,
+    nombre: 'Torpedo Cincelado al Lacre',
+    desc: 'Torpedo en cuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido.',
+    precio: 42000, badge: 'Nuevo',
+    colorVariants: [
+      { color: 'borravino', label: 'Borravino', hex: '#5a1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 1 }
+    ],
+    imgs: ['images/torpedo-lacre-borravino-1.jpg','images/torpedo-lacre-negro-1.jpg']
   }
 ];
 
@@ -2532,9 +2495,9 @@ function renderProductos() {
         ${p.badge ? `<span class="producto-badge">${p.badge}</span>` : ''}
         <div class="carousel" id="carousel-${p.id}">
           <img src="${p.imgs[0]}" alt="${p.nombre}" class="producto-img" id="carimg-${p.id}"/>
-          ${imgCount > 1 ? `<button class="car-btn car-prev" onclick="carMove(${p.id},-1,event)">&#8249;</button>` : ''}
-          ${imgCount > 1 ? `<button class="car-btn car-next" onclick="carMove(${p.id},1,event)">&#8250;</button>` : ''}
-          ${imgCount > 1 ? `<div class="car-dots" id="dots-${p.id}">${dots}</div>` : ''}
+          <button class="car-btn car-prev" onclick="carMove(${p.id},-1,event)">&#8249;</button>
+          <button class="car-btn car-next" onclick="carMove(${p.id},1,event)">&#8250;</button>
+          <div class="car-dots" id="dots-${p.id}">${dots}</div>
         </div>
       </div>
       <div class="producto-info">
@@ -2554,33 +2517,29 @@ function renderProductos() {
 }
 
 function carMove(id, dir, e) {
-  e && e.stopPropagation();
+  e.stopPropagation();
   const prod = productos.find(p=>p.id===id);
   const state = carouselState[id];
   const imgs = getCarImgs(prod, state.offset);
   state.idx = (state.idx + dir + imgs.length) % imgs.length;
-  updateCarousel(id, dir);
+  updateCarousel(id);
 }
 
 function carGoTo(id, idx, e) {
   e.stopPropagation();
-  const prev = carouselState[id].idx;
   carouselState[id].idx = idx;
-  updateCarousel(id, idx > prev ? 1 : -1);
+  updateCarousel(id);
 }
 
-function updateCarousel(id, dir) {
+function updateCarousel(id) {
   const prod = productos.find(p=>p.id===id);
   const state = carouselState[id];
   const imgs = getCarImgs(prod, state.offset);
   const img = document.getElementById('carimg-'+id);
   const dotsEl = document.getElementById('dots-'+id);
   if (img) {
-    if (dir !== undefined) {
-      slideImg(img, dir, imgs[state.idx], null, state.idx);
-    } else {
-      img.src = imgs[state.idx];
-    }
+    img.style.opacity='0';
+    setTimeout(()=>{ img.src=imgs[state.idx]; img.style.opacity='1'; },150);
   }
   if (dotsEl) {
     [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===state.idx));
@@ -2684,24 +2643,13 @@ function toggleCart() {
   document.body.style.overflow = isOpen ? '' : 'hidden';
 }
 
-function openWA(phone, msg) {
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-  const a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
 function checkoutWA() {
   if (cart.length === 0) return;
   const phone = '5492213634633';
-  const items = cart.map(i => `• ${i.nombre} x${i.qty} = ${formatPrecio(i.precio * i.qty)}`).join('\n');
+  const items = cart.map(i => `• ${i.nombre} x${i.qty} = ${formatPrecio(i.precio * i.qty)}`).join('%0A');
   const total = cart.reduce((s, i) => s + i.precio * i.qty, 0);
-  const msg = `Hola! Quiero hacer el siguiente pedido:\n\n${items}\n\n*Total: ${formatPrecio(total)}*\n\nMuchas gracias!`;
-  openWA(phone, msg);
+  const msg = `Hola! Quiero hacer el siguiente pedido:%0A%0A${items}%0A%0A*Total: ${formatPrecio(total)}*%0A%0AMuchas gracias!`;
+  window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
 }
 
 // ─── WHATSAPP FORM ───
@@ -2712,9 +2660,10 @@ function enviarWhatsApp() {
     showToast('⚠️ Completá tu nombre y mensaje');
     return;
   }
+  // Replace with real number: 5491112345678
   const phone = '5492213634633';
   const text = `Hola! Soy *${nombre}*. ${mensaje}`;
-  openWA(phone, text);
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 // ─── TOAST ───
@@ -2754,56 +2703,32 @@ function showToast(msg) {
 <script>
 
 
-
-// ─── PORTA MATE VARIANTS ───
-const portaMateNegro = ['images/porta-mate-negro-1.jpg','images/porta-mate-negro-2.jpg'];
-const portaMateMarron = ['images/porta-mate-marron-1.jpg','images/porta-mate-marron-2.jpg'];
 // ─── BOMBILLA CAROUSEL ───
 const bcarImgs = {
-  1: ["images/bombillon-trenzado-1.jpg", "images/bombillon-trenzado-2.jpg"],
-  2: ["images/bombillon-diamante-1.jpg", "images/bombillon-diamante-2.jpg"],
-  5: ['images/bombillon-recto-alpaca-1.jpg', 'images/bombillon-recto-alpaca-2.jpg'],
-  6: ['images/bombillon-pico-alpaca-1.jpg', 'images/bombillon-pico-alpaca-2.jpg'],
+  1: ['images/bombillon-trenzado-1.jpg','images/bombillon-trenzado-2.jpg'],
+  2: ['images/bombillon-diamante-1.jpg','images/bombillon-diamante-2.jpg'],
+  3: ['images/bombilla-pico.jpg'],
+  4: ['images/bombillon-recto.jpg'],
+  5: ['images/bombillon-recto-alpaca-1.jpg','images/bombillon-recto-alpaca-2.jpg'],
+  6: ['images/bombillon-pico-alpaca-1.jpg','images/bombillon-pico-alpaca-2.jpg']
 };
 
-const bcarState = {};
-const carAnimatingSet = new WeakSet();
-
-function slideImg(img, dir, newSrc, dotsEl, newIdx) {
-  if (img.dataset.animating) return;
-  img.dataset.animating = '1';
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = newSrc;
-    img.style.opacity = '1';
-    if (dotsEl) [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === newIdx));
-    setTimeout(() => delete img.dataset.animating, 220);
-  }, 150);
-}
-
 function bcarMove(cid, dir) {
-  if (bcarState[cid] === undefined) bcarState[cid] = 0;
-  const imgs = bcarImgs[cid];
-  bcarState[cid] = (bcarState[cid] + dir + imgs.length) % imgs.length;
   const img = document.getElementById('bcarimg-' + cid);
   const dotsEl = document.getElementById('bcardots-' + cid);
-  slideImg(img, dir, imgs[bcarState[cid]], dotsEl, bcarState[cid]);
+  const imgs = bcarImgs[cid];
+  let idx = imgs.indexOf(img.src);
+  if (idx === -1) idx = 0;
+  const newIdx = (idx + dir + imgs.length) % imgs.length;
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = imgs[newIdx];
+    img.style.opacity = '1';
+  }, 150);
+  if (dotsEl) {
+    [...dotsEl.children].forEach((d,i) => d.classList.toggle('active', i === newIdx));
+  }
 }
-
-// Inicializar src de carruseles de bombillas desde bcarImgs
-document.addEventListener('DOMContentLoaded', () => {
-  Object.entries(bcarImgs).forEach(([cid, imgs]) => {
-    const img = document.getElementById('bcarimg-' + cid);
-    if (img && imgs[0]) img.src = imgs[0];
-    bcarState[cid] = 0;
-  });
-  // Inicializar carruseles de accesorios desde accCarImgs
-  Object.entries(accCarImgs).forEach(([cid, imgs]) => {
-    const img = document.getElementById('accimg-' + cid);
-    if (img && imgs[0]) img.src = imgs[0];
-    accCarState[cid] = 0;
-  });
-});
 
 // ─── BOMBILLA ADD TO CART ───
 function addToCartBombilla(id, nombre, precio) {
@@ -2828,27 +2753,29 @@ function addToCartBombilla(id, nombre, precio) {
 
 // ─── ACCESORIOS CAROUSEL ───
 const accCarImgs = {
-  1: ['images/matera-cuerina-1.jpg', 'images/matera-cuerina-2.jpg'],
-  2: ['images/porta-mate-negro-1.jpg', 'images/porta-mate-negro-2.jpg'],
-  3: ['images/set-latas-1.jpg', 'images/set-latas-2.jpg', 'images/set-latas-3.jpg']
+  1: ['images/matera-cuerina-1.jpg','images/matera-cuerina-2.jpg'],
+  2: ['images/porta-mate-negro-1.jpg','images/porta-mate-negro-2.jpg'],
+  3: ['images/set-latas-1.jpg','images/set-latas-2.jpg','images/set-latas-3.jpg']
 };
 
-const accCarState = {};
 function accCarMove(cid, dir) {
-  if (accCarState[cid] === undefined) accCarState[cid] = 0;
   const imgs = accCarImgs[cid];
-  accCarState[cid] = (accCarState[cid] + dir + imgs.length) % imgs.length;
   const img = document.getElementById('accimg-'+cid);
   const dotsEl = document.getElementById('accdots-'+cid);
-  slideImg(img, dir, imgs[accCarState[cid]], dotsEl, accCarState[cid]);
+  let idx = imgs.indexOf(img.src);
+  if (idx === -1) idx = 0;
+  const newIdx = (idx + dir + imgs.length) % imgs.length;
+  img.style.opacity='0';
+  setTimeout(()=>{ img.src=imgs[newIdx]; img.style.opacity='1'; }, 150);
+  if (dotsEl) [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===newIdx));
 }
 
 function accSwatch(cid, variantIdx, btn, imgs1, imgs2) {
   const allImgs = variantIdx === 0 ? imgs1 : imgs2;
   accCarImgs[cid] = allImgs;
-  accCarState[cid] = 0;
   const img = document.getElementById('accimg-'+cid);
-  img.src = allImgs[0];
+  img.style.opacity='0';
+  setTimeout(()=>{ img.src=allImgs[0]; img.style.opacity='1'; },150);
   const dotsEl = document.getElementById('accdots-'+cid);
   if (dotsEl) [...dotsEl.children].forEach((d,i)=>d.classList.toggle('active',i===0));
   const wrap = btn.closest('.acc-swatches');
@@ -2872,7 +2799,7 @@ function addToCartAcc(id, nombre, precio) {
 const responses = [
   {
     keys: ['precio', 'cuanto sale', 'cuánto sale', 'cuanto cuesta', 'cuánto cuesta', 'valor', 'precios'],
-    answer: `Estos son nuestros precios actuales 🧉\n\n<b>Mates:</b>\n• Torpedo al Lacre Avejentado — $45.000 ✨ Nuevo\n• Torpedo al Lacre — $42.000 ✨ Nuevo\n• Torpedo con Bolitas — $38.000\n• Imperial Reforzada — $37.900\n• Ranchero — $32.000\n• Torpedo Cincelado — $32.500\n• Imperial — $29.500 🎉 Oferta\n• Imperial de Algarrobo — $24.000 ✨ Nuevo\n• Camionero de Algarrobo — $14.500 ✨ Nuevo\n\n<b>Bombillas y Bombillones:</b>\n• Bombillón Trenzado de Alpaca — $32.000\n• Bombillón Diamante Alpaca y Bronce — $32.000\n• Bombillón Recto — $12.000\n• Bombilla Pico de Loro — $7.000`
+    answer: `Estos son nuestros precios actuales 🧉\n\n<b>Mates:</b>\n• Torpedo Cincelado con Bolitas — $38.000\n• Imperial — $37.900 (¡en oferta!)\n• Imperial Reforzada — $37.900\n• Ranchero — $32.000\n• Torpedo Cincelado — $32.500\n\n<b>Bombillas y Bombillones:</b>\n• Bombillón Trenzado de Alpaca — $30.000\n• Bombillón Diamante Alpaca y Bronce — $30.000\n• Bombillón Recto — $12.000\n• Bombilla Pico de Loro — $7.000`
   },
   {
     keys: ['torpedo cincelado con bolitas', 'torpedo con bolitas', 'bolitas'],
@@ -2880,43 +2807,27 @@ const responses = [
   },
   {
     keys: ['imperial con base reforzada', 'base reforzada', 'reforzada'],
-    answer: `El <b>Imperial con base reforzada</b> vale $37.900 y está disponible en <b>Bordo y Marrón</b> 🟤🟫\n\nEs la versión más robusta del Imperial, con herraje en las patas para mayor durabilidad. Ideal para uso intensivo diario.`
+    answer: `El <b>Imperial Reforzada</b> vale $37.900 y está disponible en <b>Bordo y Marrón</b> 🟤🟫\n\nEs la versión más robusta del Imperial, con herraje en las patas para mayor durabilidad. Ideal para uso intensivo diario.`
   },
   {
     keys: ['imperial con base', 'imperial'],
-    answer: `El <b>Imperial</b> vale $29.500 🎉 Disponible en <b>Bordo y Negro</b> 🟤⚫\n\nTiene base plana y aro cuadriculado. Es uno de los más estables y cómodos para matear todos los días.`
+    answer: `El <b>Imperial</b> vale $37.900 y está en <b>oferta</b> 🎉 Disponible en <b>Bordo y Negro</b> 🟤⚫\n\nTiene base plana y aro cuadriculado. Es uno de los más estables y cómodos para matear todos los días.`
   },
   {
     keys: ['ranchero'],
     answer: `El <b>Ranchero</b> vale $32.000 🎨\n\nEs un mate de madera pintada a mano en blanco y dorado. Cada pieza es única porque depende de la madera natural. Si buscás algo distinto y artístico, este es tu mate.`
   },
   {
-    keys: ['torpedo lacre avejentado', 'lacre avejentado', 'avejentado'],
-    answer: `El <b>Torpedo Cincelado al Lacre (Avejentado)</b> vale $45.000 ✨\n\nCuero lacrado con acabado avejentado único. Aro cincelado con motivos florales y base con patas de madera. Una pieza irrepetible que mejora con el uso.`
-  },
-  {
-    keys: ['torpedo lacre', 'torpedo al lacre', 'lacre'],
-    answer: `El <b>Torpedo Cincelado al Lacre</b> vale $42.000 y está disponible en <b>Borravino y Negro</b> 🟤⚫\n\nCuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido.`
-  },
-  {
-    keys: ['camionero algarrobo', 'camionero de algarrobo'],
-    answer: `El <b>Camionero de Algarrobo</b> vale $14.500 🪵\n\nTorneado en madera de algarrobo macizo con aro liso de alpaca. Forma clásica y robusta, ideal para largas mateadas.`
-  },
-  {
-    keys: ['imperial algarrobo', 'imperial de algarrobo', 'algarrobo'],
-    answer: `El <b>Imperial de Algarrobo</b> vale $24.000 🪵\n\nTorneado en madera de algarrobo con aro cincelado de arabescos. La madera noble le da una calidez y textura únicos.`
-  },
-  {
     keys: ['torpedo cincelado', 'torpedo'],
-    answer: `Tenemos 4 modelos torpedo:\n\n• <b>Torpedo al Lacre (Avejentado)</b> — $45.000 ✨\n• <b>Torpedo al Lacre</b> — $42.000 (Borravino/Negro)\n• <b>Torpedo con Bolitas</b> — $38.000 (Bordo/Negro)\n• <b>Torpedo Cincelado</b> — $32.500 (Bordo/Negro)\n\n¿Sobre cuál querés saber más?`
+    answer: `El <b>Torpedo Cincelado</b> vale $32.500 y está disponible en <b>Bordo y Negro</b> 🟤⚫\n\nForma torpedo con aro floral cincelado y base cuadrada. Compacto, elegante y con mucho carácter.`
   },
   {
     keys: ['bombillon trenzado', 'bombillón trenzado', 'trenzado de alpaca', 'trenzado alpaca'],
-    answer: `El <b>Bombillón Trenzado de Alpaca</b> vale $32.000 ✨\n\nTiene mango trenzado en alpaca con terminación en pico. El filtrado es impecable y el agarre es firme. Ideal para cualquier mate de cuero de nuestra colección.`
+    answer: `El <b>Bombillón Trenzado de Alpaca</b> vale $30.000 ✨\n\nTiene mango trenzado en alpaca con terminación en pico. El filtrado es impecable y el agarre es firme. Ideal para cualquier mate de cuero de nuestra colección.`
   },
   {
     keys: ['diamante', 'alpaca y bronce', 'alpaca bronce'],
-    answer: `El <b>Bombillón Diamante de Alpaca y Bronce</b> vale $32.000 ✨\n\nTiene mango trenzado en rombo con terminaciones doradas en bronce. Es el más elegante de nuestra colección, perfecto para regalar o para los que quieren destacar.`
+    answer: `El <b>Bombillón Diamante de Alpaca y Bronce</b> vale $30.000 ✨\n\nTiene mango trenzado en rombo con terminaciones doradas en bronce. Es el más elegante de nuestra colección, perfecto para regalar o para los que quieren destacar.`
   },
   {
     keys: ['bombillon recto', 'bombillón recto', 'recto'],
@@ -2936,11 +2847,11 @@ const responses = [
   },
   {
     keys: ['oferta', 'descuento', 'promocion', 'promoción'],
-    answer: `¡Sí! Actualmente el <b>Imperial</b> está en oferta a $29.500 🎉\n\nEs uno de nuestros modelos más populares, disponible en Bordo y Negro. ¡Aprovechalo antes de que se acabe!`
+    answer: `¡Sí! Actualmente el <b>Imperial</b> está en oferta a $37.900 🎉\n\nEs uno de nuestros modelos más populares, disponible en Bordo y Negro. ¡Aprovechalo antes de que se acabe!`
   },
   {
     keys: ['recomendar', 'recomendas', 'recomendás', 'cual elijo', 'cuál elijo', 'cual compro', 'cuál compro', 'para empezar', 'primer mate'],
-    answer: `Para empezar te recomiendo el <b>Imperial</b> ($29.500, en oferta 🎉). Es estable, cómodo y con muy buen precio.\n\nSi buscás algo más artístico y único, el <b>Ranchero</b> ($32.000) es pintado a mano y cada pieza es diferente.\n\nPara el bombillón, el <b>Bombillón Trenzado de Alpaca</b> es el más elegante y combina con todos los modelos.`
+    answer: `Para empezar te recomiendo el <b>Imperial</b> ($37.900, en oferta 🎉). Es estable, cómodo y con muy buen precio.\n\nSi buscás algo más artístico y único, el <b>Ranchero</b> ($32.000) es pintado a mano y cada pieza es diferente.\n\nPara el bombillón, el <b>Bombillón Trenzado de Alpaca</b> es el más elegante y combina con todos los modelos.`
   },
   {
     keys: ['curar', 'curado', 'como se cura', 'cómo se cura', 'curar mate'],
