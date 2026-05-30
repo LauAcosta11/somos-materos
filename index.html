@@ -2372,6 +2372,24 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ─── PRODUCTS DATA ───
 const productos = [
   {
+    id: 8,
+    nombre: 'Torpedo Cincelado al Lacre (Avejentado)',
+    desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
+    precio: 45000, badge: 'Nuevo', colorVariants: null, singleImg: true,
+    imgs: ['torpedo-lacre-avejentado-1.jpg']
+  },
+  {
+    id: 9,
+    nombre: 'Torpedo Cincelado al Lacre',
+    desc: 'Torpedo en cuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido.',
+    precio: 42000, badge: 'Nuevo',
+    colorVariants: [
+      { color: 'borravino', label: 'Borravino', hex: '#5a1a2a', offset: 0 },
+      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 1 }
+    ],
+    imgs: ['torpedo-lacre-borravino-1.jpg','torpedo-lacre-negro-1.jpg']
+  },
+  {
     id: 1,
     nombre: 'Torpedo Cincelado con Bolitas',
     desc: 'Mate artesanal en cuero con aro cincelado y detalles de bolitas en las patas. Elegante, firme y con una presencia que se nota desde el primer mate.',
@@ -2435,24 +2453,6 @@ const productos = [
     desc: 'Mate camionero torneado en madera de algarrobo macizo con aro liso de alpaca. Forma clásica y robusta, ideal para largas mateadas. La madera de algarrobo le da un aroma y sabor incomparables.',
     precio: 14500, badge: 'Nuevo', colorVariants: null,
     imgs: ['camionero-algarrobo-1.jpg','camionero-algarrobo-2.jpg']
-  },
-  {
-    id: 8,
-    nombre: 'Torpedo Cincelado al Lacre (Avejentado)',
-    desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
-    precio: 45000, badge: 'Nuevo', colorVariants: null,
-    imgs: ['torpedo-lacre-avejentado-1.jpg','torpedo-lacre-avejentado-2.jpg']
-  },
-  {
-    id: 9,
-    nombre: 'Torpedo Cincelado al Lacre',
-    desc: 'Torpedo en cuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido.',
-    precio: 42000, badge: 'Nuevo',
-    colorVariants: [
-      { color: 'borravino', label: 'Borravino', hex: '#5a1a2a', offset: 0 },
-      { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 1 }
-    ],
-    imgs: ['torpedo-lacre-borravino-1.jpg','torpedo-lacre-negro-1.jpg']
   }
 ];
 
@@ -2485,7 +2485,7 @@ function renderProductos() {
             onclick="switchVariant(${p.id},${v.offset},this)"></button>
         `).join('')}
       </div>` : '';
-    const imgCount = p.colorVariants ? 3 : p.imgs.length;
+    const imgCount = p.singleImg ? 1 : (p.colorVariants ? 3 : p.imgs.length);
     const dots = [...Array(imgCount)].map((_,i) =>
       `<span class="car-dot${i===0?' active':''}" onclick="carGoTo(${p.id},${i},event)"></span>`
     ).join('');
@@ -2495,9 +2495,8 @@ function renderProductos() {
         ${p.badge ? `<span class="producto-badge">${p.badge}</span>` : ''}
         <div class="carousel" id="carousel-${p.id}">
           <img src="${p.imgs[0]}" alt="${p.nombre}" class="producto-img" id="carimg-${p.id}"/>
-          <button class="car-btn car-prev" onclick="carMove(${p.id},-1,event)">&#8249;</button>
-          <button class="car-btn car-next" onclick="carMove(${p.id},1,event)">&#8250;</button>
-          <div class="car-dots" id="dots-${p.id}">${dots}</div>
+          ${p.singleImg ? '' : '<button class="car-btn car-prev" onclick="carMove('+p.id+',-1,event)">&#8249;</button><button class="car-btn car-next" onclick="carMove('+p.id+',1,event)">&#8250;</button>'}
+          ${p.singleImg ? '' : '<div class="car-dots" id="dots-'+p.id+'">'+dots+'</div>'}
         </div>
       </div>
       <div class="producto-info">
