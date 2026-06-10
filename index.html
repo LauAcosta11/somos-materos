@@ -912,6 +912,10 @@
     }
 
 
+    /* ─── LACRE NEGRO FIX ─── */
+    #card-9 .producto-img {
+      object-position: center 65%;
+    }
     /* ─── CAROUSEL ─── */
     .carousel { position: relative; overflow: hidden; background: #f0ebe0; }
     .carousel .producto-img {
@@ -2375,18 +2379,19 @@ const productos = [
     id: 8,
     nombre: 'Torpedo Cincelado al Lacre (Avejentado)',
     desc: 'Mate torpedo en cuero lacrado con acabado avejentado único. El proceso de lacrado le otorga una pátina irrepetible que mejora con el uso. Aro cincelado con motivos florales y base con patas de madera.',
-    precio: 45000, badge: 'Nuevo', colorVariants: null, singleImg: true,
+    precio: 47900, badge: 'Nuevo', colorVariants: null, singleImg: true,
     imgs: ['torpedo-lacre-avejentado-1.jpg']
   },
   {
     id: 9,
     nombre: 'Torpedo Cincelado al Lacre',
     desc: 'Torpedo en cuero lacrado con aro floral cincelado y base con patas de madera. El lacre le da una presencia y brillo distinguido.',
-    precio: 42000, badge: 'Nuevo',
+    precio: 44900, badge: 'Nuevo',
     colorVariants: [
       { color: 'borravino', label: 'Borravino', hex: '#5a1a2a', offset: 0 },
       { color: 'negro', label: 'Negro', hex: '#1a1a1a', offset: 1 }
     ],
+    singleImg: true,
     imgs: ['torpedo-lacre-borravino-1.jpg','torpedo-lacre-negro-1.jpg']
   },
   {
@@ -2453,6 +2458,20 @@ const productos = [
     desc: 'Mate camionero torneado en madera de algarrobo macizo con aro liso de alpaca. Forma clásica y robusta, ideal para largas mateadas. La madera de algarrobo le da un aroma y sabor incomparables.',
     precio: 14500, badge: 'Nuevo', colorVariants: null,
     imgs: ['camionero-algarrobo-1.jpg','camionero-algarrobo-2.jpg']
+  },
+  {
+    id: 10,
+    nombre: 'Camionero Criollo',
+    desc: 'Mate camionero de calabaza natural con faja de cuero criollo cosida a mano. Forma tradicional, materiales nobles y ese sabor auténtico que solo da la calabaza.',
+    precio: 18000, badge: 'Nuevo', colorVariants: null, singleImg: true,
+    imgs: ['IMG_1339.jpg']
+  },
+  {
+    id: 11,
+    nombre: 'Coquito Criollo',
+    desc: 'Mate coquito de calabaza natural con faja de cuero criollo. Tamaño compacto, perfecto para los que prefieren un mate personal y con mucha identidad.',
+    precio: 18000, badge: 'Nuevo', colorVariants: null, singleImg: true,
+    imgs: ['IMG_1345.jpg']
   }
 ];
 
